@@ -1,16 +1,13 @@
-<!-- PROJECT LOGO -->
 <br />
 <p align="center">
   <a href="https://github.com/citi-onboarding/pta-boilerplate">
     <img src="./assets/logoCITi.png" alt="Logo" width="180px">
   </a>
 
-  <h3 align="center">PTA</h3>
+  <h3 align="center">PTA — Squad Philip</h3>
 
   <p align="center">
-  Este boilerplate foi criado em 2025.1 com a proposta de trazer a frente mobile para o Processo de Treinamento de Área (PTA) do CITi. Ele foi desenvolvido com base no boilerplate utilizado nos processos seletivos de 2022 e atualizado em 2023.2, que tinha como objetivo aproximar as pessoas aspirantes da realidade dentro da empresa. Esta nova versão mantém esse propósito, ao mesmo tempo em que amplia a capacitação técnica, alinhando-se às demandas atuais da empresa.
-    <br />
-    <a href="https://github.com/citi-onboarding/pta-boilerplate"><strong>Explore the docs »</strong></a>
+    Repositório do desafio de desenvolvimento PTA 26.1 do CITi. O projeto é um sistema de gestão de biblioteca escolar composto por três frentes: um servidor Node.js (backend), uma interface web em Next.js e um aplicativo mobile em React Native com Expo.
     <br />
     <br />
     ·
@@ -20,433 +17,295 @@
   </p>
 </p>
 
+---
 
 <!-- TABLE OF CONTENTS -->
 <details open="open">
   <summary><h2 style="display: inline-block">Tabela de Conteúdo</h2></summary>
   <ol>
-    <li><a href="#about-boilerplate">About Boilerplate</a></li>
-    <li><a href="#server">Server</a></li></li>
+    <li><a href="#estrutura-do-projeto">Estrutura do Projeto</a></li>
+    <li><a href="#server">Server</a></li>
     <ul>
-        <li><a href="#how-to-install">How To Install</a></li></li>
-        <li><a href="#how-to-run">How To Run</a></li></li>
-        <li><a href="#citi-abstraction-documentation">Citi Abstraction Documentation</a></li></li>
-        <ul>
-        <li><a href="#are-values-undefined">Are Values Undefined</a></li></li>
-        <li><a href="#insert-into-database">Insert Into Database</a></li></li>
-        <li><a href="#get-all">Get All</a></li></li>
-        <li><a href="#find-by-id">Find By ID</a></li></li>
-        <li><a href="#delete-value">Delete Value</a></li></li>
-        <li><a href="#delete">Update</a></li></li>
-        </ul>
+      <li><a href="#how-to-install-server">Como Instalar</a></li>
+      <li><a href="#how-to-run-server">Como Rodar</a></li>
+      <li><a href="#citi-abstraction-documentation">Documentação da Abstração Citi</a></li>
+      <ul>
+        <li><a href="#are-values-undefined">areValuesUndefined</a></li>
+        <li><a href="#insert-into-database">insertIntoDatabase</a></li>
+        <li><a href="#get-all">getAll</a></li>
+        <li><a href="#find-by-id">findById</a></li>
+        <li><a href="#delete-value">deleteValue</a></li>
+        <li><a href="#update-value">updateValue</a></li>
+      </ul>
     </ul>
     <li><a href="#client">Client</a></li>
-        <ul>
-        <li><a href="#how-to-install-client">How To Install Client</a></li></li>
-        <li><a href="#how-to-run-client">How To Run Client</a></li></li>
-        </ul>
+    <ul>
+      <li><a href="#how-to-install-client">Como Instalar</a></li>
+      <li><a href="#how-to-run-client">Como Rodar</a></li>
     </ul>
-    <li><a href="#add-new-dependencies">Add New Dependencies</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#mobile">Mobile</a></li>
+    <ul>
+      <li><a href="#how-to-install-mobile">Como Instalar</a></li>
+      <li><a href="#how-to-run-mobile">Como Rodar</a></li>
+    </ul>
+    <li><a href="#adicionar-dependencias">Adicionar Dependências</a></li>
+    <li><a href="#contact">Contato</a></li>
   </ol>
 </details>
 
-<br/> 
+---
 
-## About Boilerplate
-<br/>
+## Estrutura do Projeto
 
-  Esse boilerplate foi criado durante o processo seletivo de 2022 do CITi e ele tem o intuito de aproximar as pessoas aspirantes à realidade
-  dentro do CITi. O boilerplate será usado durante a última etapa do processo seletivo, a qual tem o objetivo de capacitar tecnicamente as pessoas que entrarão no CITi.
-  O template foi criado em um monorepo e está estruturado em cliente (mobile) e servidor.
-
-<p align= "center">
-    <img src = "./assets/client-server.png" width="85%" margin-top="20px"/>
+<p align="center">
+  <img src="./assets/client-server.png" width="85%" />
 </p>
 
+O projeto é um monorepo com três pastas principais:
 
-O server contém uma estrutura base de código voltada à construção de uma API, incluindo uma abstração pensada para facilitar o contato inicial das pessoas aspirantes com o desenvolvimento de back-end. Já o cleint, apresenta uma base de código para a construção de toda a interface web da aplicação. A nova pasta mobile traz uma estrutura inicial para o desenvolvimento da versão mobile da aplicação, ampliando o escopo técnico e alinhando-se às frentes utilizadas em projetos reais do CITi.
+- **`server/`** — API REST em Node.js + Express + Prisma ORM. Contém a abstração `Citi` que facilita operações no banco de dados.
+- **`client/`** — Interface web em Next.js + Tailwind CSS + Shadcn UI. Voltada para administradores gerenciarem livros e empréstimos.
+- **`mobile/`** — Aplicativo mobile em React Native + Expo + NativeWind. Voltado para leitores consultarem seus empréstimos.
 
-
-<br/> 
+---
 
 ## Server
 
-<br/>
+### Como Instalar
 
-## How To Install
-
-<br/>
-
-0. Certifique-se que o **node** e o **pnpm** estejam devidamente instalados. 
-   ```bash
+1. Certifique-se de que o **Node.js** e o **pnpm** estão instalados:
+```bash
    npm i -g pnpm
-   ```
+```
 
-1. Clone o repositório
-
-   ```sh
+2. Clone o repositório:
+```bash
    git clone URL_DO_REPOSITÓRIO
-   ```
+```
 
-2. Entre na pasta /server do repositório
-
-3. Abra a pasta /server no vscode
-
-4. Vá em terminal e abra o novo terminal 
-
-5. Com o terminal aberto, escreva essa sentença abaixo e dê enter
-
-   ```sh
+3. Entre na pasta `server/` e instale as dependências:
+```bash
+   cd server
    pnpm install
-   ```
+```
 
-   ou 
+4. Após instalar, aprove os build scripts das dependências:
+```bash
+   pnpm approve-builds
+```
+   Selecione todos os pacotes com `a` e confirme com `Enter`.
 
-   ```sh
-   pnpm i
-   ```
+---
 
-<br/> 
+### Como Rodar
 
-## How To Run
+1. Certifique-se de que o **Docker** está instalado e rodando.
 
-<br/>
+2. Na pasta `server/`, crie um arquivo `.env` com o seguinte conteúdo:
+```env
+   # ###### GENERAL SETTINGS #######
+   PROJECT_NAME=pta
+   SERVER_PORT=3001
 
-0. Certifique-se que o docker esteja devidamente instalado
-1. Com a pasta /server aberta no vscode, crie um novo arquivo e o nomeie de ".env"
-2. Dentro desse novo arquivo criado, coloque esse texto abaixo
+   # ###### DATABASE SETTINGS #######
+   DATABASE_TYPE=postgres
+   DATABASE_HOST=${PROJECT_NAME}-db
+   DATABASE_PORT=5432
+   DATABASE_USER=postgres
+   DATABASE_PASSWORD=docker
+   DATABASE_DB=${PROJECT_NAME}
 
-   ```javascript
-      # ###### GENERAL SETTINGS #######
-      PROJECT_NAME=pta
-      SERVER_PORT=3001 
+   DATABASE_URL=${DATABASE_TYPE}://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DB}
+```
 
-      # ###### DATABASE SETTINGS #######
-      DATABASE_TYPE=postgres
-      DATABASE_HOST=${PROJECT_NAME}-db
-      DATABASE_PORT=5432
-      DATABASE_USER=postgres
-      DATABASE_PASSWORD=docker
-      DATABASE_DB=${PROJECT_NAME}
-
-      DATABASE_URL=${DATABASE_TYPE}://${DATABASE_USER}:${DATABASE_PASSWORD}@${DATABASE_HOST}:${DATABASE_PORT}/${DATABASE_DB}
-   ```
-3. Abra um novo terminal no vscode
-4. Com o terminal aberto, escreva essa sentença abaixo e dê enter
-
-   ```sh
-   docker-compose up
-   ```
-
-   ou 
-
-   ```sh
+3. Suba o banco de dados com Docker:
+```bash
    docker compose up
-   ```
+```
 
-5. Espere que o terminal esteja dessa maneira
+4. Aguarde até o terminal indicar que o servidor está pronto:
 
-    <p align= "center"><img src= "./assets/server-status.png" width="85%"/>
-        
-    </p>
+   <p align="center"><img src="./assets/server-status.png" width="85%" /></p>
 
-6. Com este terminal rodando, abra outro terminal, ainda na pasta /server, e rode essa sentença abaixo
-
-   ```sh
+5. Com o Docker rodando, abra outro terminal na pasta `server/` e rode as migrations:
+```bash
    pnpm migration
-   ```
-
-   *OBS. 1: Ao aparecer o campo "Enter a name for the new migration:", digite uma frase rápida que indique o que foi feito (ex.: add model user). A migration é como se fosse o commit do banco de dados.*
-   
-   *OBS. 2: É necessário que esse comando seja rodado a cada vez que você modificar o arquivo `schema.prisma`*
-
-<br/> 
-
-## Citi Abstraction Documentation
-
-<br/>
-
-### Are Values Undefined
-
-<br/>
-
-Essa função verifica se existe um valor undefined passando no argumento.
-
-- Observação: Essa função recebe quantos argumentos forem preciso.
-
-   
-    
-   ```javascript 
-    Retorna o booleano true caso exista valores undefnined
-   ```
-
-   ```javascript
-    Retorna o booleano false caso exista valores undefnined
-   ```
-
-Exemplo:
-<p align= "center">
-    <img src= "./assets/undefined.png" width="85%"/>
-    </p>
-
-<br/> 
-
-### Insert Into Database
-
-<br/>
-
-Essa função tem a finalidade de inserir um valor de modelo dentro de um banco de dados.
-
-- Observação: Essa função recebe o novo objeto a ser inserido como argumentos.
-
-<br/>
-
-   ```javascript 
-    Retorna https 201 caso o procedimento ocorra de forma correta
-   ```
-
-   ```javascript
-    Retorna https 400 caso o procedimento NÃO ocorra de forma correta
-   ```
+```
+   > Quando aparecer o campo **"Enter a name for the new migration:"**, digite uma frase curta descrevendo o que foi feito (ex: `add model livro`). Pense na migration como o commit do banco de dados — rode esse comando sempre que modificar o `schema.prisma`.
 
 
-Exemplo:
-<p align= "center">
-    <img src= "./assets/insert.png" width="85%"/>
-    </p>
+---
 
-<br/> 
+### Documentação da Abstração Citi
 
-### Get All
+O backend usa uma abstração chamada `Citi` que encapsula as operações do Prisma. Em vez de escrever queries diretamente, você instancia a classe passando o nome do modelo e usa os métodos prontos.
 
-<br/>
+**Como instanciar:**
+```typescript
+const citi = new Citi("Livro")
+```
 
-Essa função tem a finalidade de pegar TODOS os valores de modelo dentro de um banco de dados.
+> O nome passado deve corresponder exatamente ao nome do modelo no `schema.prisma`.
 
-- Observação: Essa função não tem argumentos.
+---
 
-<br/>
+#### areValuesUndefined
 
-   ```javascript 
-    Retorna https 200 caso o procedimento ocorra de forma correta
-   ```
+Verifica se algum dos valores passados é `undefined`. Útil para validar campos obrigatórios antes de inserir no banco.
 
-   ```javascript
-    Retorna https 400 caso o procedimento NÃO ocorra de forma correta
-   ```
+- Aceita qualquer quantidade de argumentos
+- Retorna `true` se algum valor for `undefined`, `false` caso contrário
 
+```typescript
+const isAnyUndefined = citi.areValuesUndefined(titulo, autor, isbn)
+if (isAnyUndefined) return response.status(400).send()
+```
 
-Exemplo:
-<p align= "center">
-    <img src= "./assets/get.png" width="85%"/>
-    </p>
+<p align="center"><img src="./assets/undefined.png" width="85%" /></p>
 
-<br/> 
+---
 
-### Find By Id
+#### insertIntoDatabase
 
-<br/>
+Insere um novo registro no banco de dados.
 
-Essa função tem a finalidade de procurar um valor de modelo dentro de um banco de dado, utilizando o ID.
+- Recebe um objeto com os dados a serem inseridos
+- Retorna `httpStatus: 201` em caso de sucesso
+- Retorna `httpStatus: 400` em caso de erro
 
-- Observação: Essa função recebe o ID como argumento.
+```typescript
+const { httpStatus, message } = await citi.insertIntoDatabase({ titulo: "Clean Code", autor: "Robert C. Martin" })
+```
 
-<br/>
+<p align="center"><img src="./assets/insert.png" width="85%" /></p>
 
-   ```javascript 
-    Retorna o valor procurado caso o procedimento ocorra de forma correta
-   ```
+---
 
-   ```javascript
-    Retorna undefined caso o procedimento NÃO ocorra de forma correta
-   ```
+#### getAll
 
+Retorna todos os registros do modelo no banco.
 
-Exemplo:
-<p align= "center">
-    <img src= "./assets/find.png" width="85%"/>
-    </p>
+- Não recebe argumentos
+- Retorna `httpStatus: 200` e `values` com a lista em caso de sucesso
+- Retorna `httpStatus: 400` e `values: []` em caso de erro
 
-<br/> 
+```typescript
+const { httpStatus, values } = await citi.getAll()
+```
 
+<p align="center"><img src="./assets/get.png" width="85%" /></p>
 
-### Delete Value
+---
 
-<br/>
+#### findById
 
-Essa função tem a finalidade de deletar um valor de modelo dentro de um banco de dado, utilizando o ID.
+Busca um registro pelo ID.
 
-- Observação: Essa função recebe o ID como argumento.
+- Recebe o ID como argumento (string UUID)
+- Retorna `httpStatus: 200` e `value` com o registro em caso de sucesso
+- Retorna `httpStatus: 400` e `value: undefined` se não encontrado
 
-<br/>
+```typescript
+const { httpStatus, value } = await citi.findById("uuid-aqui")
+```
 
-   ```javascript 
-    Retorna https 200 caso o procedimento ocorra de forma correta
-   ```
+<p align="center"><img src="./assets/find.png" width="85%" /></p>
 
-   ```javascript
-    Retorna https 400 caso o procedimento NÃO ocorra de forma correta
-   ```
+---
 
-Exemplo:
-<p align= "center">
-    <img src= "./assets/delete.png" width="85%"/>
-    </p>
+#### deleteValue
 
-<br/> 
+Deleta um registro pelo ID.
 
-### Update Value
+- Recebe o ID como argumento (string UUID)
+- Retorna `httpStatus: 200` em caso de sucesso
+- Retorna `httpStatus: 400` em caso de erro
 
-<br/>
+```typescript
+const { httpStatus, messageFromDelete } = await citi.deleteValue("uuid-aqui")
+```
 
-Essa função tem a finalidade de atualizar um valor de modelo dentro de um banco de dado, utilizando o ID.
+<p align="center"><img src="./assets/delete.png" width="85%" /></p>
 
-- Observação: Essa função recebe o ID e os novos valores como argumentos.
+---
 
-<br/>
+#### updateValue
 
-   ```javascript 
-    Retorna https 200 caso o procedimento ocorra de forma correta
-   ```
+Atualiza um registro pelo ID.
 
-   ```javascript
-    Retorna https 400 caso o procedimento NÃO ocorra de forma correta
-   ```
+- Recebe o ID e um objeto com os valores a serem atualizados
+- Retorna `httpStatus: 200` em caso de sucesso
+- Retorna `httpStatus: 400` em caso de erro
 
-Exemplo:
-<p align= "center">
-    <img src= "./assets/update.png" width="85%"/>
-    </p>
+```typescript
+const { httpStatus, messageFromUpdate } = await citi.updateValue("uuid-aqui", { quantidade_disponivel: 5 })
+```
 
-<br/> 
+<p align="center"><img src="./assets/update.png" width="85%" /></p>
+
+---
 
 ## Client
 
-<br/>
+### Como Instalar
 
-## How To Install Client
-
-<br/>
-
-1. Entre na pasta /client do repositório
-
-2. Abra a pasta /client  no vscode
-
-3. Vá em terminal e abra o novo terminal 
-
-4. Com o terminal aberto, escreva essa sentença abaixo e dê enter
-
-   ```sh
+1. Entre na pasta `client/` e instale as dependências:
+```bash
+   cd client
    pnpm install
-   ```
+```
 
-   ou 
+---
 
-   ```sh
-   pnpm i
-   ```
+### Como Rodar
 
-<br/> 
+1. Entre na pasta `client/` e inicie o servidor de desenvolvimento:
+```bash
+   cd client
+   pnpm dev
+```
 
-## How To Run Client
+2. Aguarde o terminal indicar que o client está pronto:
 
-<br/>
+   <p align="center"><img src="./assets/client-status.png" width="85%" /></p>
 
-1. Entre na pasta /client do repositório
+3. Acesse no navegador: [http://localhost:3000](http://localhost:3000)
 
-2. Abra a pasta /client no vscode
-
-3. Vá em terminal e abra o novo terminal 
-
-4. Com o terminal aberto, escreva essa sentença abaixo e dê enter
-
-   ```sh
-   pnpm run dev
-   ```
-
-3. Espere que o terminal esteja dessa maneira
-
-    <p align= "center"><img src= "./assets/client-status.png" width="85%"/>
-        
-    </p>
-
-<br/> 
+---
 
 ## Mobile
 
-<br/>
+### Como Instalar
 
-## How To Install Mobile
+1. Certifique-se de que o **Expo Go** está instalado no seu celular (disponível para Android e iOS).
 
-<br/>
-
-1. Entre na pasta /mobile do repositório
-
-2. Abra a pasta /mobile  no vscode
-
-3. Vá em terminal e abra o novo terminal 
-
-4. Com o terminal aberto, escreva essa sentença abaixo e dê enter
-
-   ```sh
+2. Entre na pasta `mobile/` e instale as dependências:
+```bash
+   cd mobile
    pnpm install
-   ```
+```
 
-   ou 
+---
 
-   ```sh
-   pnpm i
-   ```
+### Como Rodar
 
-<br/> 
+1. Entre na pasta `mobile/` e inicie o servidor Expo:
+```bash
+   cd mobile
+   pnpm start
+```
 
-## How To Run Mobile
+2. No terminal aparecerá um QR Code. Escaneie com o Expo Go no celular para abrir o app.
 
-<br/>
+   > **Atenção:** seu computador e celular precisam estar na mesma rede Wi-Fi.
 
-1. Certifique-se de que o aplicativo Expo Go esteja instalado em seu celular (disponível para Android e iOS)
+---
 
-2. Entre na pasta /mobile do repositório
+## Adicionar Dependências
 
-3. Abra a pasta /mobile no vscode
+Não instale novas dependências sem autorização da pessoa gerente do projeto. Em caso de necessidade, converse com o gerente e peça direcionamento.
 
-4. Vá em terminal e abra o novo terminal
+---
 
-5. Com o terminal aberto, escreva essa sentença abaixo e dê enter
-
-   ```sh
-   pnpm run start
-   ```
-
-6. No terminal, aparecerá um QR Code. Escaneie esse código com o aplicativo Expo Go no seu celular para abrir o app.
-   Obs: seu computador e celular devem estar na mesma rede Wi-Fi
-
-        
-    </p>
-
-<br/> 
-
-## Add New Dependencies
-
-<br/>
-
-Não instale novas dependências sem a autorização da pessoa gerente do projeto. Caso seja preciso, converse com gerentes e peça direcionamento 
-de como faz para adicionar. 
-
-
-<br/> 
-
-## Contact
-
-<br/>
-
-- [Alex Damascena](https://github.com/apfdamascena), líder de desenvolvimento em 2022.1 - apfd@cin.ufpe.br
-- [Tiago Lima](https://github.com/titi-lima), líder de desenvolvimento em 2023.2 - tmsl@cin.ufpe.br
-- [Thaís Neves](https://github.com/thaisnevest), líder de desenvolvimento em 2025.1 - tns2@cin.ufpe.br
-
-## 2025 Boilerplate
-
-<br/>
-
-- [apfdamascena/pta-boilerplate](https://github.com/apfdamascena/pta-boilerplate)
+## Contato
+Para qualquer dúvida em relação ao projeto, contate o gerente!
