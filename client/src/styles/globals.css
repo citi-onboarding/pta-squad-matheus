@@ -14,6 +14,26 @@
     text-rendering: optimizeLegibility;
   }
   :root {
+    /* Tabela */
+    --table-header-bg: #F7F9FA;
+    --table-border-color: #D9E2E8;
+    --table-border-width: 0.83px;
+
+    /* Badge: Em andamento */
+    --badge-ongoing-bg:     #fef9c2;
+    --badge-ongoing-border: #ffdf20;
+    --badge-ongoing-text:   #a65f00;
+
+    /* Badge: Atrasado */
+    --badge-late-bg:     #EF444433;
+    --badge-late-border: #EF44444D;
+    --badge-late-text:   #EF4444;
+
+    /* Badge: Devolvido */
+    --badge-returned-bg:     #00C38933;
+    --badge-returned-border: #00C3894D;
+    --badge-returned-text:   #00C389;
+
     --background: 0 0% 100%;
     --foreground: 240 10% 3.9%;
     --card: 0 0% 100%;
@@ -74,5 +94,32 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer components {
+  .status-badge {
+    @apply inline-block rounded-full px-3 py-1 text-sm font-normal;
+  }
+  .status-badge--ongoing {
+    background-color: var(--badge-ongoing-bg);
+    border: 1px solid var(--badge-ongoing-border);
+    color: var(--badge-ongoing-text);
+  }
+  .status-badge--late {
+    background-color: var(--badge-late-bg);
+    border: 1px solid var(--badge-late-border);
+    color: var(--badge-late-text);
+  }
+  .status-badge--returned {
+    background-color: var(--badge-returned-bg);
+    border: 1px solid var(--badge-returned-border);
+    color: var(--badge-returned-text);
+  }
+  .table-row-border {
+    border-bottom: var(--table-border-width) solid var(--table-border-color);
+  }
+  .table-header-row {
+    background-color: var(--table-header-bg);
   }
 }
