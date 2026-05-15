@@ -35,8 +35,7 @@ export function Header() {
             textColor={activeTab === 'dashboard' ? 'text-emerald-600' : 'text-gray-800'}
             text="Dashboard"
             srcImage={activeTab === 'dashboard' ? "/img/selecthome.png" : "/img/home.png"}
-            onClick={() => {setActiveTab('dashboard'),
-                            console.log('Aba atual: dashboard');}}
+            onClick={() => setActiveTab('dashboard')}
           />
           {/* 2. Livros — estilo outline verde com ícone BookOpen */}
           <RetangularButton
@@ -44,8 +43,7 @@ export function Header() {
             backgroundColor={activeTab === 'livros' ? 'bg-emerald-100' : 'bg-transparent'}
             textColor={activeTab === 'livros' ? 'text-emerald-600' : 'text-gray-800'}
             srcImage={activeTab === 'livros' ? "/img/selectopenbook.png" : "/img/openbook.png"}
-            onClick={() => {setActiveTab('livros'),
-                            console.log('Aba atual: livros');}}
+            onClick={() => setActiveTab('livros')}
           />
           {/* 3. + Novo Livro — estilo sólido verde com ícone Plus */}
           <RetangularButton
@@ -53,8 +51,7 @@ export function Header() {
             textColor="text-white"
             backgroundColor="bg-green-400"
             srcImage="/img/plus.png"
-            onClick={() => {setActiveTab('novo livro'),
-                            console.log('Aba atual: novo livro');}}
+            onClick={() => setActiveTab('novo livro')}
           />
         </nav>
 
