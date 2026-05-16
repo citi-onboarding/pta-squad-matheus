@@ -12,7 +12,8 @@ const statusClass: Record<LoanStatus, string> = {
 
 function computeStatus(loan: Loan): LoanStatus {
   if (loan.returned) return 'Devolvido'
-  if (new Date() > new Date(loan.returnDate)) return 'Atrasado'
+  const today = new Date().toISOString().split('T')[0]
+  if (today > loan.returnDate) return 'Atrasado'
   return 'Em andamento'
 }
 
