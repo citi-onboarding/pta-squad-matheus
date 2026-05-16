@@ -1,8 +1,7 @@
 import { Loan, LoanStatus } from '@/types/loan'
-import { mockLoans } from '@/data/mock-loans'
 
 interface LastLoansTableProps {
-  loans?: Loan[]
+  loans: Loan[]
 }
 
 const statusClass: Record<LoanStatus, string> = {
@@ -26,7 +25,7 @@ function StatusBadge({ status }: { status: LoanStatus }) {
   return <span className={statusClass[status]}>{status}</span>
 }
 
-export function LastLoansTable({ loans = mockLoans }: LastLoansTableProps) {
+export function LastLoansTable({ loans }: LastLoansTableProps) {
   return (
     <div className="w-full overflow-x-auto">
       <table className="w-full text-sm">
