@@ -1,29 +1,9 @@
-import { Loan, LoanStatus } from '@/types/loan'
+import { Loan } from '@/types/loan'
+import { computeStatus, formatDate } from '@/utils/loan-utils'
+import { StatusBadge } from '@/components/ui/status-badge'
 
 interface LastLoansTableProps {
   loans: Loan[]
-}
-
-const statusClass: Record<LoanStatus, string> = {
-  'Em andamento': 'status-badge status-badge--ongoing',
-  'Atrasado':     'status-badge status-badge--late',
-  'Devolvido':    'status-badge status-badge--returned',
-}
-
-function computeStatus(loan: Loan): LoanStatus {
-  if (loan.returned) return 'Devolvido'
-  const today = new Date().toISOString().split('T')[0]
-  if (today > loan.returnDate) return 'Atrasado'
-  return 'Em andamento'
-}
-
-function formatDate(iso: string): string {
-  const [year, month, day] = iso.split('-')
-  return `${day}/${month}/${year}`
-}
-
-function StatusBadge({ status }: { status: LoanStatus }) {
-  return <span className={statusClass[status]}>{status}</span>
 }
 
 export function LastLoansTable({ loans }: LastLoansTableProps) {
