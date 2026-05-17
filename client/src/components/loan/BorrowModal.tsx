@@ -13,7 +13,11 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 
-export function BorrowModal() {
+interface BorrowModalProps {
+  bookTitle: string;
+}
+
+export function BorrowModal({ bookTitle }: BorrowModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
@@ -33,7 +37,7 @@ export function BorrowModal() {
 
             <div className=" mt-5 bg-gray-50 rounded-lg p-3">
                 <p className="text-xs text-gray-400">Livro selecionado</p>
-                <p className="text-sm text-gray-600">O Pequeno Príncipe</p>
+                <p className="text-sm text-gray-600">{bookTitle}</p>
             </div>
         </div>
         
