@@ -8,8 +8,10 @@ export const statusClass: Record<LoanStatus, string> = {
 
 export function computeStatus(loan: Loan): LoanStatus {
   if (loan.returned) return 'Devolvido'
-  const today = new Date().toISOString().split('T')[0]
-  if (today > loan.returnDate) return 'Atrasado'
+  const today = new Date()
+  today.setHours(0, 0, 0, 0)
+  const ret = new Date(loan.returnDate + 'T00:00:00')
+  if (today > ret) return 'Atrasado'
   return 'Em andamento'
 }
 
