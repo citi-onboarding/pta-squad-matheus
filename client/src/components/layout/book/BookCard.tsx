@@ -24,7 +24,7 @@ export function BookCard({
 
       {/* SEÇÃO 1: Área da capa */}
       <div className="w-full h-48 bg-gray-100 flex items-center justify-center">
-      
+        <img src={coverUrl} alt={`Capa do livro ${title}`} className="w-full h-full object-cover" />
       </div>
 
       {/* SEÇÃO 2: Informações do livro */}

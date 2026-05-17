@@ -6,34 +6,34 @@ export default function TestPage() {
   return (
     <div>
       <Header />
-      <div className="p-10 grid grid-cols-3 gap-4">
+      <div className="p-10 grid grid-cols-3 gap-4 w-[70%] mx-auto">
         <BookCard
-          title="O Senhor dos Anéis"
-          author="J.R.R. Tolkien"
-          category="Fantasia"
-          availableQuantity={5}
-          coverUrl="/img/lotr.jpg"
+          title="Livro 1"
+          author="Autor 1"
+          category="Genero 1"
+          availableQuantity={1}
+          coverUrl="/img/Ciencias.png"
         />
         <BookCard
-          title="Tudo é rio"
-          author="Carla Madeira"
-          category="Romance"
-          availableQuantity={0}
-          coverUrl="/img/lotr.jpg"
-        />
-        <BookCard
-          title="ddd 81"
-          author="fulaninho"
-          category="Romance"
+          title="Livro 2"
+          author="Autor 2"
+          category="Genero 2"
           availableQuantity={2}
-          coverUrl="/img/lotr.jpg"
+          coverUrl="/img/Ciencias.png"
         />
         <BookCard
-          title="Hora da estrela"
-          author="Clarice Lispector"
-          category="Romance"
-          availableQuantity={2}
-          coverUrl="/img/lotr.jpg"
+          title="Livro 3"
+          author="Autor 3"
+          category="Genero 3"
+          availableQuantity={3}
+          coverUrl="/img/Ciencias.png"
+        />
+        <BookCard
+          title="Livro 4"
+          author="Autor 4"
+          category="Genero 4"
+          availableQuantity={4}
+          coverUrl="/img/Ciencias.png"
         />
       </div>
     </div>
