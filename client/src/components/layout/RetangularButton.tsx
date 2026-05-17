@@ -1,6 +1,7 @@
 import Image from "next/image";
 
 interface RetangularButtonProps {
+    className?: string;
     text?: string;
     backgroundColor?: string;
     textColor?: string;
@@ -9,6 +10,7 @@ interface RetangularButtonProps {
 }
 
 export default function RetangularButton({
+    className = "",
     text = "botao", 
     backgroundColor = "bg-emerald-500",
     textColor = "text-white",
@@ -16,14 +18,16 @@ export default function RetangularButton({
     onClick}:
     RetangularButtonProps){
     return (
-        <button className={`flex items-center 
-                            gap-2 px-5 py-2 
+        <button className={`flex justify-center
+                            gap-1 px-2 py-2 
                             ${backgroundColor} ${textColor}
                             rounded-md 
-                            hover:opacity-50`}
+                            hover:opacity-50 ${className}`}
                 onClick={onClick}>
-            <Image src={srcImage} alt="Icone do botão" width={17} height={17}/>
-            {text} 
+            <div className="flex items-center gap-1">
+                <Image src={srcImage} alt="Icone do botão" width={17} height={17} className="w-17 h-17"/>
+                <p className="hidden md:block">{text}</p>
+            </div>
         </button>
     )
 }

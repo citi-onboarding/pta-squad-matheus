@@ -13,7 +13,7 @@ export function Header() {
   return (
     <>
       {/* Barrinha verde decorativa no topo */}
-      <div className="h-1 bg-green-400 w-full" />
+      <div className=" w-full" />
 
       {/* Container principal */}
       <header className="bg-white border-b border-gray-100 px-6 py-3 flex items-center justify-around">
