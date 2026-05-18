@@ -12,7 +12,7 @@ interface RetangularButtonProps {
 export default function RetangularButton({
     className = "",
     text = "botao", 
-    backgroundColor = "bg-emerald-500",
+    backgroundColor = "bg-brand-green",
     textColor = "text-white",
     srcImage = "/img/icon-192.png",
     onClick}:
