@@ -15,13 +15,14 @@ import { Label } from "@/components/ui/label";
 
 interface BorrowModalProps {
   bookTitle: string;
+  className?: string;
 }
 
-export function BorrowModal({ bookTitle }: BorrowModalProps) {
+export function BorrowModal({ bookTitle, className }: BorrowModalProps) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="bg-emerald-500 hover:bg-emerald-600 text-white">
+        <Button className={`bg-brand-green hover:bg-brand-green/80 text-white h-11 ${className}`}>
           Emprestar
         </Button>
       </DialogTrigger>  
@@ -87,7 +88,7 @@ export function BorrowModal({ bookTitle }: BorrowModalProps) {
             </Button>
           </DialogClose>
 
-          <Button className="bg-emerald-500 hover:bg-emerald-600 text-white w-52 h-12">
+          <Button className="bg-brand-green hover:bg-emerald-600 text-white w-52 h-12">
             Confirmar Empréstimo
           </Button>
         </div>

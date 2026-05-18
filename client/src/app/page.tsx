@@ -1,12 +1,5 @@
-import { Header } from '@/components/layout/Header';
+import { redirect } from 'next/navigation';
 
-export default function TestPage() {
-  return (
-    <div>
-      <Header />
-      <div className="p-10">
-        <p>Conteúdo da página aqui...</p>
-      </div>
-    </div>
-  );
+export default function Home() {
+  redirect('/dashboard');
 }
