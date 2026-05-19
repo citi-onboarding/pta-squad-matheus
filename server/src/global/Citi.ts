@@ -124,7 +124,7 @@ export default class Citi<Entity extends ModelNames> {
         //@ts-expect-error
       ].findFirst({
         where: {
-          id: Number(id),
+          id,
         },
       });
       Terminal.show(Message.VALUE_WAS_FOUND);
@@ -197,7 +197,7 @@ export default class Citi<Entity extends ModelNames> {
         //@ts-expect-error
       ].delete({
         where: {
-          id: Number(id),
+          id,
         },
       });
       Terminal.show(Message.VALUE_DELETED_FROM_DATABASE);
