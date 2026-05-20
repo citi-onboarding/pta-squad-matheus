@@ -19,7 +19,7 @@ class LivroController implements Crud {
     );
     if (isAnyUndefined) return response.status(400).send();
 
-    const { httpStatus, message } = await this.citi.insertIntoDatabase({
+    const novoLivro = {
       titulo,
       autor,
       isbn,
@@ -28,9 +28,11 @@ class LivroController implements Crud {
       quantidadeTotal,
       quantidadeDisponivel: quantidadeTotal,
       categoria,
-    });
+    };
 
-    return response.status(httpStatus).send({ message });
+    const { httpStatus } = await this.citi.insertIntoDatabase(novoLivro);
+
+    return response.status(httpStatus).send(novoLivro);
   };
 
   listar = async (request: Request, response: Response) => {
