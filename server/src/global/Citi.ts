@@ -62,9 +62,9 @@ export default class Citi<Entity extends ModelNames> {
    */
   async insertIntoDatabase<T extends ModelCreateInput[Entity]>(
     object: T
-  ): Promise<InsertableDatabase> {
+  ): Promise<InsertableDatabase<Models[Entity]>> {
     try {
-      await prisma[
+      const value = await prisma[
         this.entity.toLowerCase() as Uncapitalize<Prisma.ModelName>
         //@ts-expect-error
       ].create({
@@ -74,6 +74,7 @@ export default class Citi<Entity extends ModelNames> {
       return {
         httpStatus: 201,
         message: Message.INSERTED_IN_DATABASE,
+        value,
       };
     } catch (error) {
       Terminal.show(Message.ERROR_INSERTING_DATABASE);
@@ -124,7 +125,7 @@ export default class Citi<Entity extends ModelNames> {
         //@ts-expect-error
       ].findFirst({
         where: {
-          id: Number(id),
+          id,
         },
       });
       Terminal.show(Message.VALUE_WAS_FOUND);
@@ -197,7 +198,7 @@ export default class Citi<Entity extends ModelNames> {
         //@ts-expect-error
       ].delete({
         where: {
-          id: Number(id),
+          id,
         },
       });
       Terminal.show(Message.VALUE_DELETED_FROM_DATABASE);
