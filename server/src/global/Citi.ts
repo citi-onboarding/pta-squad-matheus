@@ -166,7 +166,7 @@ export default class Citi<Entity extends ModelNames> {
         //@ts-expect-error
       ].update({
         where: {
-          id: Number(id),
+          id,
         },
         data: object,
       });
