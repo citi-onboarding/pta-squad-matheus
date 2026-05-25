@@ -75,32 +75,32 @@ export function BookDetailsModal() {
                     <div className="w-60 h-88 bg-gray-200 rounded-md flex-shrink-0" />
 
                     <div className="flex flex-col">
-                        <h2 className="text-xl font-bold">{mockLivro.titulo}</h2>
+                        <h2 className="text-xl font-medium">{mockLivro.titulo}</h2>
                         <p className="text-gray-500">{mockLivro.autor}</p>
                         <div className="grid grid-cols-2 gap-x-20 gap-y-4 mt-4">
                             <div>
                                 <p className="text-sm text-gray-500">ISBN</p>
-                                <p className="font-medium">{mockLivro.isbn}</p>
+                                <p className="">{mockLivro.isbn}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Categoria</p>
-                                <p className="font-medium text-emerald-500">{mockLivro.categoria}</p>
+                                <p className="text-emerald-500">{mockLivro.categoria}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Editora</p>
-                                <p className="font-medium">{mockLivro.editora}</p>
+                                <p className="">{mockLivro.editora}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Ano</p>
-                                <p className="font-medium">{mockLivro.ano}</p>
+                                <p className="">{mockLivro.ano}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Quantidade Total</p>
-                                <p className="font-medium">{mockLivro.quantidadeTotal}</p>
+                                <p className="">{mockLivro.quantidadeTotal}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Quantidade Disponivel</p>
-                                <p className="font-medium text-emerald-500">{mockLivro.quantidadeDisponivel} Unidades</p>
+                                <p className="text-emerald-500">{mockLivro.quantidadeDisponivel} Unidades</p>
                             </div>
                         </div>
                     </div>
@@ -110,7 +110,7 @@ export function BookDetailsModal() {
                 <hr className="border-gray-200" />
 
                 <div className="flex flex-col gap-2">
-                    <h2 className="text-xl font-bold">Histórico de Empréstimos</h2>
+                    <h2 className="text-xl font-medium">Histórico de Empréstimos</h2>
                     {mockEmprestimos.map((emprestimo) => (
                         <LoanHistoryRow
                             key={emprestimo.clientEmail}
