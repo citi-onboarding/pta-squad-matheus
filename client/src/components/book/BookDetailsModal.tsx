@@ -27,25 +27,31 @@ const mockLivro = {
 
 const mockEmprestimos = [
     {
-        borrowerName: 'João Silva',
-        borrowerEmail: 'joao@email.com',
-        borrowDate: '20/04/2026',
-        expectedReturnDate: '27/04/2026',
-        status: 'em_andamento' as const,
+        id: '1',
+        bookTitle: 'O Pequeno Príncipe',
+        clientName: 'João Silva',
+        clientEmail: 'joao@email.com',
+        loanDate: '2026-04-20',
+        returnDate: '2026-05-27',
+        returned: false,
     },
     {
-        borrowerName: 'Maria Santos',
-        borrowerEmail: 'maria@email.com',
-        borrowDate: '10/04/2026',
-        expectedReturnDate: '17/04/2026',
-        status: 'atrasado' as const,
+        id: '2',
+        bookTitle: 'O Pequeno Príncipe',
+        clientName: 'Maria Santos',
+        clientEmail: 'maria@email.com',
+        loanDate: '2026-04-10',
+        returnDate: '2026-04-17',
+        returned: false,
     },
     {
-        borrowerName: 'Pedro Costa',
-        borrowerEmail: 'pedro@email.com',
-        borrowDate: '05/04/2026',
-        expectedReturnDate: '12/04/2026',
-        status: 'devolvido' as const,
+        id: '3',
+        bookTitle: 'O Pequeno Príncipe',
+        clientName: 'Pedro Costa',
+        clientEmail: 'pedro@email.com',
+        loanDate: '2026-04-05',
+        returnDate: '2026-04-12',
+        returned: true,
     },
 ];
 
@@ -62,15 +68,12 @@ export function BookDetailsModal() {
                 <DialogHeader>
                     <DialogTitle>Detalhes do Livro</DialogTitle>
                 </DialogHeader>
-                {/* linha cinza */}
+
                 <hr className="border-gray-200" />
 
-                {/* div que contem lado a lado a capa e as infos */}
                 <div className="flex gap-4">
-                    {/* capa */}
                     <div className="w-60 h-88 bg-gray-200 rounded-md flex-shrink-0" />
 
-                    {/* div que contem titulo autor e tabela em coluna(um em cima do outro) */}
                     <div className="flex flex-col">
                         <h2 className="text-xl font-bold">{mockLivro.titulo}</h2>
                         <p className="text-gray-500">{mockLivro.autor}</p>
@@ -99,21 +102,22 @@ export function BookDetailsModal() {
                                 <p className="text-sm text-gray-500">Quantidade Disponivel</p>
                                 <p className="font-medium text-emerald-500">{mockLivro.quantidadeDisponivel} Unidades</p>
                             </div>
-                            {/* ... repete o padrão para os outros campos */}
                         </div>
                     </div>
 
                 </div>
 
-
-                {/* SEÇÃO 1: Informações do livro */}
-                {/* VOCÊ DEVE: montar capa + título + autor + grid de infos */}
-
-                {/* Separador */}
                 <hr className="border-gray-200" />
 
-                {/* SEÇÃO 2: Histórico de Empréstimos */}
-                {/* VOCÊ DEVE: título "Histórico de Empréstimos" + HistoryRows */}
+                <div className="flex flex-col gap-2">
+                    <h2 className="text-xl font-bold">Histórico de Empréstimos</h2>
+                    {mockEmprestimos.map((emprestimo) => (
+                        <LoanHistoryRow
+                            key={emprestimo.clientEmail}
+                            loan={emprestimo}
+                        />
+                    ))}
+                </div>
 
             </DialogContent>
         </Dialog>
