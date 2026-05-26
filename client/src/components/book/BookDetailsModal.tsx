@@ -1,5 +1,4 @@
 // BookDetailsModal.tsx
-
 'use client';
 
 import { Button } from "@/components/ui/button";
@@ -13,49 +12,33 @@ import {
 
 import { LoanHistoryRow } from '@/components/loan-history-row/index';
 
-// Dados mockados
-const mockLivro = {
-    titulo: 'O Pequeno Príncipe',
-    autor: 'Antoine de Saint-Exupéry',
-    isbn: '978-0132350884',
-    categoria: 'Infantil',
-    editora: 'Prentice Hall',
-    ano: 2008,
-    quantidadeTotal: 10,
-    quantidadeDisponivel: 8,
-};
+interface Livro {
+    titulo: string;
+    autor: string;
+    isbn: string;
+    categoria: string;
+    editora: string;
+    ano: number;
+    quantidadeTotal: number;
+    quantidadeDisponivel: number;
+}
 
-const mockEmprestimos = [
-    {
-        id: '1',
-        bookTitle: 'O Pequeno Príncipe',
-        clientName: 'João Silva',
-        clientEmail: 'joao@email.com',
-        loanDate: '2026-04-20',
-        returnDate: '2026-05-27',
-        returned: false,
-    },
-    {
-        id: '2',
-        bookTitle: 'O Pequeno Príncipe',
-        clientName: 'Maria Santos',
-        clientEmail: 'maria@email.com',
-        loanDate: '2026-04-10',
-        returnDate: '2026-04-17',
-        returned: false,
-    },
-    {
-        id: '3',
-        bookTitle: 'O Pequeno Príncipe',
-        clientName: 'Pedro Costa',
-        clientEmail: 'pedro@email.com',
-        loanDate: '2026-04-05',
-        returnDate: '2026-04-12',
-        returned: true,
-    },
-];
+interface Emprestimo {
+    id: string;
+    bookTitle: string;
+    clientName: string;
+    clientEmail: string;
+    loanDate: string;
+    returnDate: string;
+    returned: boolean;
+}
 
-export function BookDetailsModal() {
+interface BookDetailsModalProps {
+    livro: Livro;
+    emprestimos: Emprestimo[];
+}
+
+export function BookDetailsModal({ livro, emprestimos }: BookDetailsModalProps) {
     return (
         <Dialog>
             <DialogTrigger asChild>
@@ -75,32 +58,32 @@ export function BookDetailsModal() {
                     <div className="w-60 h-88 bg-gray-200 rounded-md flex-shrink-0" />
 
                     <div className="flex flex-col">
-                        <h2 className="text-xl font-medium">{mockLivro.titulo}</h2>
-                        <p className="text-gray-500">{mockLivro.autor}</p>
+                        <h2 className="text-xl font-medium">{livro.titulo}</h2>
+                        <p className="text-gray-500">{livro.autor}</p>
                         <div className="grid grid-cols-2 gap-x-20 gap-y-4 mt-4">
                             <div>
                                 <p className="text-sm text-gray-500">ISBN</p>
-                                <p className="">{mockLivro.isbn}</p>
+                                <p className="">{livro.isbn}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Categoria</p>
-                                <p className="text-emerald-500">{mockLivro.categoria}</p>
+                                <p className="text-emerald-500">{livro.categoria}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Editora</p>
-                                <p className="">{mockLivro.editora}</p>
+                                <p className="">{livro.editora}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Ano</p>
-                                <p className="">{mockLivro.ano}</p>
+                                <p className="">{livro.ano}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Quantidade Total</p>
-                                <p className="">{mockLivro.quantidadeTotal}</p>
+                                <p className="">{livro.quantidadeTotal}</p>
                             </div>
                             <div>
                                 <p className="text-sm text-gray-500">Quantidade Disponivel</p>
-                                <p className="text-emerald-500">{mockLivro.quantidadeDisponivel} Unidades</p>
+                                <p className="text-emerald-500">{livro.quantidadeDisponivel} Unidades</p>
                             </div>
                         </div>
                     </div>
@@ -111,9 +94,9 @@ export function BookDetailsModal() {
 
                 <div className="flex flex-col gap-2">
                     <h2 className="text-xl font-medium">Histórico de Empréstimos</h2>
-                    {mockEmprestimos.map((emprestimo) => (
+                    {emprestimos.map((emprestimo) => (
                         <LoanHistoryRow
-                            key={emprestimo.clientEmail}
+                            key={emprestimo.id}
                             loan={emprestimo}
                         />
                     ))}
