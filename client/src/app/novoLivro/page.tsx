@@ -17,8 +17,8 @@ export default function CadastrarLivroPage() {
   const [categoriaSelecionada, setCategoriaSelecionada] = useState('');
 
   return (
-    <div className="min-h-screen bg-[#F7F9FA]">
-      <div className="max-w-4xl mx-auto p-6">
+    <div className="min-h-[calc(100vh-65px)] bg-[#F7F9FA] md:flex md:flex-col">
+      <div className="max-w-4xl md:max-w-5xl w-full mx-auto p-6 md:flex md:flex-col md:flex-1">
         <h1 className="text-2xl font-medium text-gray-800 mb-2">
           Cadastrar Novo Livro
         </h1>
@@ -26,54 +26,65 @@ export default function CadastrarLivroPage() {
           Adicione um novo livro ao acervo
         </p>
 
-        <div className="bg-white rounded-xl border border-[#D9E2E8] p-6">
+        <div className="bg-white rounded-xl border border-[#D9E2E8] p-6 md:flex md:flex-col md:flex-1 md:mb-8 shadow-[0_2px_4px_-2px_rgba(0,0,0,0.1),0_4px_6px_-1px_rgba(0,0,0,0.1)]">
 
           {/* Seção 1 — Campos do formulário + Capa */}
-          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-stretch">
+          <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-stretch md:flex-1">
 
             {/* Campos */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
-              <div className="grid gap-2">
-                <Label htmlFor="titulo">Título</Label>
-                <Input id="titulo" placeholder="Digite o título do livro" />
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start md:auto-rows-fr">
+              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
+                <Label className="md:text-base" htmlFor="titulo">
+                  Título
+                </Label>
+                <Input id="titulo" placeholder="Digite o título do livro" className="md:flex-1 md:max-h-[56px] md:!text-base" />
               </div>
 
-              <div className="grid gap-2 relative">
-                <Label htmlFor="autor">Autor</Label>
-                <Input id="autor" placeholder="Digite o nome do autor" />
-                <span className="absolute top-[calc(100%+2px)] text-xs text-[#FF0000]">
+              <div className="grid gap-2 md:flex md:flex-col md:justify-between relative">
+                <Label className="md:text-base" htmlFor="autor">
+                  Autor
+                </Label>
+                <Input id="autor" placeholder="Digite o nome do autor" className="md:flex-1 md:max-h-[56px] md:!text-base" />
+                <span className="absolute top-[calc(100%+3px)] text-xs text-[#FF0000] md:pl-2">
                   *Este é um campo obrigatório.
                 </span>
               </div>
 
-              <div className="grid gap-2">
-                <Label htmlFor="isbn">ISBN</Label>
-                <Input id="isbn" placeholder="Digite o ISBN" />
+              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
+                <Label className="md:text-base" htmlFor="isbn">
+                  ISBN
+                </Label>
+                <Input id="isbn" placeholder="Digite o ISBN" className="md:flex-1 md:max-h-[56px] md:!text-base" />
               </div>
 
-              <div className="grid gap-2">
-                <Label htmlFor="editora">Editora</Label>
-                <Input id="editora" placeholder="Digite a editora" />
+              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
+                <Label className="md:text-base" htmlFor="editora">
+                  Editora
+                </Label>
+                <Input id="editora" placeholder="Digite a editora" className="md:flex-1 md:max-h-[56px] md:!text-base" />
               </div>
 
-              <div className="grid gap-2">
-                <Label htmlFor="ano">Ano</Label>
-                <Input id="ano" type="number" placeholder="Digite o ano" />
+              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
+                <Label className="md:text-base" htmlFor="ano">
+                  Ano
+                </Label>
+                <Input id="ano" type="number" placeholder="Digite o ano" className="md:flex-1 md:max-h-[56px] md:!text-base" />
               </div>
 
-              <div className="grid gap-2">
-                <Label htmlFor="quantidade">Quantidade</Label>
-                <Input id="quantidade" type="number" placeholder="Digite a quantidade" />
+              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
+                <Label className="md:text-base" htmlFor="quantidade">
+                  Quantidade
+                </Label>
+                <Input id="quantidade" type="number" placeholder="Digite a quantidade" className="md:flex-1 md:max-h-[56px] md:!text-base" />
               </div>
             </div>
 
             {/* Upload da capa */}
-            <div className="flex flex-col gap-2">
-              <Label>Capa do Livro</Label>
+            <div className="flex flex-col gap-3">
+              <Label className="md:text-base">Capa do Livro</Label>
               <button
                 type="button"
-                className="flex flex-col items-center justify-center flex-1 rounded-xl border-2 border-dashed border-[#D9E2E8] bg-[#F7F9FA] hover:border-gray-400 hover:bg-gray-100 transition-colors cursor-pointer"
-                style={{ aspectRatio: '2/3' }}
+                className="flex flex-col items-center justify-center flex-1 [aspect-ratio:2/3] md:[aspect-ratio:auto] md:w-[clamp(180px,18vw,280px)] rounded-xl border-2 border-dashed border-[#D9E2E8] bg-[#F7F9FA] hover:border-gray-400 hover:bg-gray-100 transition-colors cursor-pointer"
               >
                 <img src="/img/upload.png" alt="Upload" className="w-10 h-10 mb-2 opacity-50" />
                 <span className="text-xs text-gray-400 text-center px-2">Clique para adicionar</span>
@@ -84,7 +95,7 @@ export default function CadastrarLivroPage() {
 
           {/* Seção 2 — Categoria */}
           <div className="border-t border-[#D9E2E8] mt-6 pt-6 grid gap-3">
-            <Label>Categoria</Label>
+            <Label className="md:text-base">Categoria</Label>
             <div className="grid grid-cols-2 md:flex md:flex-nowrap mt-2 gap-4">
               {categorias.map(({ value, label }) => (
                 <button
@@ -92,13 +103,13 @@ export default function CadastrarLivroPage() {
                   type="button"
                   onClick={() => setCategoriaSelecionada(value)}
                   className={[
-                    'md:flex-1 flex flex-col items-center pt-5 pb-5 px-4 rounded-xl border-2 transition-colors',
+                    'md:flex-1 flex flex-col items-center pt-2 pb-3 px-4 rounded-xl border-2 transition-colors',
                     categoriaSelecionada === value
                       ? 'border-brand-green bg-emerald-50'
                       : 'border-[#D9E2E8] bg-white hover:border-gray-300',
                   ].join(' ')}
                 >
-                  <div className="w-full h-[112px]" />
+                  <div className="w-full h-[112px] md:h-auto md:aspect-[4/5]" />
                   <span className="mt-2 text-sm font-medium text-gray-800">{label}</span>
                 </button>
               ))}
@@ -107,10 +118,10 @@ export default function CadastrarLivroPage() {
 
           {/* Seção 3 — Botões */}
           <div className="border-t border-[#D9E2E8] mt-6 pt-6 flex flex-col-reverse md:flex-row justify-end gap-3">
-            <Button className="border border-brand-green text-brand-green bg-white hover:bg-emerald-50 md:w-auto w-full">
+            <Button className="border border-brand-green text-brand-green bg-white hover:bg-emerald-50 md:w-auto w-full md:h-12 md:text-base md:px-6">
               Cancelar
             </Button>
-            <Button className="bg-brand-green text-white hover:bg-brand-green/90 md:w-auto w-full">
+            <Button className="bg-brand-green text-white hover:bg-brand-green/90 md:w-auto w-full md:h-12 md:text-base md:px-6">
               Salvar Livro
             </Button>
           </div>
