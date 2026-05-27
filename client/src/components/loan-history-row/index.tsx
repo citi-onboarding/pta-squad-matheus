@@ -8,13 +8,14 @@ import { StatusBadge } from '@/components/ui/status-badge'
 interface LoanHistoryRowProps {
   loan: Loan
   onSendReminder?: (loanId: string) => Promise<void>
+  onConfirmReturn?: (loanId: string) => Promise<void>
 }
 
-export function LoanHistoryRow({ loan, onSendReminder }: LoanHistoryRowProps) {
+export function LoanHistoryRow({ loan, onSendReminder, onConfirmReturn }: LoanHistoryRowProps) {
   const status = computeStatus(loan)
 
   return (
-    <div className="flex items-center justify-between px-4 py-4 my-4 rounded-lg border border-[#D9E2E8]">
+    <div className="flex items-center justify-between px-4 py-4 my-1 rounded-lg border border-[#D9E2E8]">
       <div className="flex flex-col gap-1">
         <div className="flex items-center gap-2">
           <span className="text-gray-900">{loan.clientName}</span>
@@ -29,15 +30,26 @@ export function LoanHistoryRow({ loan, onSendReminder }: LoanHistoryRowProps) {
         </p>
       </div>
 
-      {status === 'Atrasado' && (
-        <button
-          className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium"
-          style={{ border: '2px solid #00C389', color: '#00C389' }}
-          onClick={() => onSendReminder?.(loan.id)}
-        >
-          <Mail size={18} />
-          Enviar Lembrete
-        </button>
+      {(status === 'Atrasado' || status === 'Em andamento') && (
+        <div className="flex flex-col gap-2 items-end">
+          {status === 'Atrasado' && (
+            <button
+              className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium"
+              style={{ border: '2px solid #00C389', color: '#00C389' }}
+              onClick={() => onSendReminder?.(loan.id)}
+            >
+              <Mail size={18} />
+              Enviar Lembrete
+            </button>
+          )}
+          <button
+            className="flex items-center gap-2 px-4 py-2 rounded-md text-sm font-medium"
+            style={{ backgroundColor: '#00C389', color: 'white' }}
+            onClick={() => onConfirmReturn?.(loan.id)}
+          >
+            Confirmar Devolução
+          </button>
+        </div>
       )}
     </div>
   )
