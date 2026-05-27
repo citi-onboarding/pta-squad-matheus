@@ -33,18 +33,7 @@ export default function LivrosPage() {
 
       {/* Grid de Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {mockLivros.map((livro) => (
-        <BookCard
-          key={livro.id}
-          id={livro.id}
-          title={livro.title}
-          author={livro.author}
-          category={livro.category}
-          availableQuantity={livro.availableQuantity}
-          onView={(id) => console.log('Ver', id)}
-          onBorrow={(id) => console.log('Emprestar', id)}
-          onDelete={(id) => console.log('Excluir', id)}
-        />))}
+        
         {/* VOCÊ DEVE: mapear o array mockLivros e renderizar um BookCard pra cada */}
       </div>
     </div>
