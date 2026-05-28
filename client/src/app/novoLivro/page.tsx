@@ -144,14 +144,7 @@ export default function CadastrarLivroPage() {
                   className="md:flex-1 md:max-h-[56px] md:!text-base"
                   {...register('isbn', {
                     required: '*Este é um campo obrigatório.',
-                    validate: (v) => {
-                      const digits = v.replace(/\D/g, '').length;
-                      return (
-                        digits === 10 ||
-                        digits === 13 ||
-                        '*ISBN deve ter 10 ou 13 dígitos.'
-                      );
-                    },
+                    validate: (v) => v.length === 10 || v.length === 13 || '*ISBN deve ter 10 ou 13 dígitos.',
                   })}
                 />
                 {errors.isbn && (
