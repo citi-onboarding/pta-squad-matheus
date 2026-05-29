@@ -1,37 +1,28 @@
 import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import { StatusBar } from 'expo-status-bar';
 
 export default function HeaderMobile() {
+    const insets = useSafeAreaInsets();
+
     return (
-        <View style={styles.header}>
-            <Text style={styles.logo}>citi</Text>
-            <Text style={styles.titulo}>Meus Empréstimos</Text>
-        </View>
+        <>
+            {/* Força os ícones de bateria/hora a ficarem escuros e pinta o fundo de branco no Android */}
+            <StatusBar style="dark" backgroundColor="#FFFFFF" translucent={true} />
+
+            <View
+                className="flex-row items-center px-5 pb-4 bg-white border-b border-gray-200"
+                // Removemos o "+ 16". Adicionamos apenas um respiro mínimo (ou os insets do notch no iOS)
+                style={{ paddingTop: insets.top > 0 ? insets.top + 4 : 20 }}
+            >
+                <Image
+                    source={require('../assets/logoCITi.png')}
+                    className="w-16 h-8 mr-4"
+                    resizeMode="contain"
+                />
+                <Text className="text-lg font-medium text-gray-800">Meus Empréstimos</Text>
+            </View>
+        </>
     );
 }
-
-const styles = StyleSheet.create({
-    header: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingHorizontal: 20,
-        paddingBottom: 16,
-        // Adaptação para descer o header da barra de status (notch)
-        paddingTop: Platform.OS === 'ios' ? 60 : 40,
-        backgroundColor: '#FFFFFF',
-        borderBottomWidth: 1,
-        borderBottomColor: '#E5E7EB',
-    },
-    logo: {
-        fontSize: 24,
-        fontWeight: 'bold',
-        fontStyle: 'italic',
-        color: '#111827',
-        marginRight: 12,
-    },
-    titulo: {
-        fontSize: 18,
-        fontWeight: '600',
-        color: '#374151',
-    },
-});
