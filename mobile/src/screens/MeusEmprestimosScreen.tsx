@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, FlatList } from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, FlatList, Keyboard } from 'react-native';
 import HeaderMobile from '../components/HeaderMobile';
 import EmprestimoCard from '../components/EmprestimoCard';
 import { Emprestimo } from '../types/emprestimo';
@@ -18,6 +18,7 @@ export default function MeusEmprestimosScreen() {
     const [listaFiltrada, setListaFiltrada] = useState<Emprestimo[]>(mockEmprestimos);
 
     const handleBuscar = () => {
+        Keyboard.dismiss();
         const termo = busca.toLowerCase().trim();
 
         // Se a busca estiver vazia, mostra todos. Caso contrário, filtra pelo NOME do usuário
