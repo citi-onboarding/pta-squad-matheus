@@ -7,7 +7,7 @@ import {
   UpdatableDatabaseValue,
   FindableDatabaseValue,
 } from "./types";
-import { PrismaClient, type Prisma } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import prisma from "@database";
 
 type ModelNames = Prisma.ModelName;
@@ -78,6 +78,15 @@ export default class Citi<Entity extends ModelNames> {
       };
     } catch (error) {
       Terminal.show(Message.ERROR_INSERTING_DATABASE);
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002"
+      ) {
+        return {
+          httpStatus: 409,
+          message: Message.ERROR_INSERTING_DATABASE,
+        };
+      }
       return {
         httpStatus: 400,
         message: Message.ERROR_INSERTING_DATABASE,
