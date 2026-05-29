@@ -1,9 +1,33 @@
 'use client';
 
+import { useCallback, useEffect, useState } from 'react';
 import { BookCard } from '@/components/book/BookCard';
 import { Search } from 'lucide-react';
 
+interface Livro {
+  id: string;
+  titulo: string;
+  autor: string;
+  isbn: string;
+  editora: string;
+  ano: number;
+  quantidadeTotal: number;
+  quantidadeDisponivel: number;
+  categoria: string;
+}
+
 export default function LivrosPage() {
+  const [livros, setLivros] = useState<Livro[]>([]);
+
+  const fetchLivros = useCallback(async () => {
+    const res = await fetch('/api/livros');
+    if (res.ok) setLivros(await res.json());
+  }, []);
+
+  useEffect(() => {
+    fetchLivros();
+  }, [fetchLivros]);
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       {/* Título da página */}
@@ -33,8 +57,18 @@ export default function LivrosPage() {
 
       {/* Grid de Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-        {/* VOCÊ DEVE: mapear o array mockLivros e renderizar um BookCard pra cada */}
+        {livros.map((livro) => (
+          <BookCard
+            key={livro.id}
+            id={livro.id}
+            title={livro.titulo}
+            author={livro.autor}
+            category={livro.categoria}
+            availableQuantity={livro.quantidadeDisponivel}
+            coverUrl="/img/openbook.png"
+            onLoanSuccess={fetchLivros}
+          />
+        ))}
       </div>
     </div>
     
