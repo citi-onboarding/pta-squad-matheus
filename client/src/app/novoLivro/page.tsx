@@ -63,7 +63,7 @@ export default function CadastrarLivroPage() {
         return;
       }
       setFeedback({ tipo: 'sucesso', texto: 'Livro cadastrado com sucesso!' });
-      reset({ titulo: '', autor: '', isbn: '', editora: '', ano: '' as unknown as number, quantidadeTotal: '' as unknown as number, categoria: '' });
+      reset()
     } catch {
       setFeedback({ tipo: 'erro', texto: 'Erro de conexão com o servidor' });
     }
@@ -144,7 +144,10 @@ export default function CadastrarLivroPage() {
                   className="md:flex-1 md:max-h-[56px] md:!text-base"
                   {...register('isbn', {
                     required: '*Este é um campo obrigatório.',
-                    validate: (v) => v.length === 10 || v.length === 13 || '*ISBN deve ter 10 ou 13 dígitos.',
+                    validate: (v) => {
+                      const digits = v.replace(/\D/g, '');
+                      return (digits.length === 10 || digits.length === 13) || '*ISBN deve ter 10 ou 13 dígitos.';
+                    },
                   })}
                 />
                 {errors.isbn && (
