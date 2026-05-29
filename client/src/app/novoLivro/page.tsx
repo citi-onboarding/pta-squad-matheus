@@ -1,9 +1,20 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Button } from '@/components/ui/button';
+
+interface CadastrarLivroForm {
+  titulo: string;
+  autor: string;
+  isbn: string;
+  editora: string;
+  ano: number;
+  quantidadeTotal: number;
+  categoria: string;
+}
 
 const categorias = [
   { value: 'ROMANCE', label: 'Romance' },
@@ -14,7 +25,49 @@ const categorias = [
 ];
 
 export default function CadastrarLivroPage() {
-  const [categoriaSelecionada, setCategoriaSelecionada] = useState('');
+  const {
+    register,
+    handleSubmit,
+    setValue,
+    watch,
+    reset,
+    formState: { errors, isSubmitting },
+  } = useForm<CadastrarLivroForm>();
+  const categoriaSelecionada = watch('categoria');
+  const [feedback, setFeedback] = useState<
+    { tipo: 'sucesso' | 'erro'; texto: string } | null
+  >(null);
+
+  useEffect(() => {
+    if (!feedback) return;
+    const timer = setTimeout(() => setFeedback(null), 4000);
+    return () => clearTimeout(timer);
+  }, [feedback]);
+
+  async function onSubmit(data: CadastrarLivroForm) {
+    setFeedback(null);
+    try {
+      const res = await fetch('/api/livros', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+      if (!res.ok) {
+        setFeedback({
+          tipo: 'erro',
+          texto:
+            res.status === 409
+              ? 'Já existe um livro com este ISBN'
+              : 'Erro ao cadastrar livro',
+        });
+        return;
+      }
+      setFeedback({ tipo: 'sucesso', texto: 'Livro cadastrado com sucesso!' });
+      reset()
+    } catch {
+      setFeedback({ tipo: 'erro', texto: 'Erro de conexão com o servidor' });
+    }
+  }
 
   return (
     <div className="min-h-[calc(100vh-65px)] bg-[#F7F9FA] md:flex md:flex-col">
@@ -26,56 +79,142 @@ export default function CadastrarLivroPage() {
           Adicione um novo livro ao acervo
         </p>
 
-        <div className="bg-white rounded-xl border border-[#D9E2E8] p-6 md:flex md:flex-col md:flex-1 md:mb-8 shadow-[0_2px_4px_-2px_rgba(0,0,0,0.1),0_4px_6px_-1px_rgba(0,0,0,0.1)]">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="bg-white rounded-xl border border-[#D9E2E8] p-6 md:flex md:flex-col md:flex-1 md:mb-8 shadow-[0_2px_4px_-2px_rgba(0,0,0,0.1),0_4px_6px_-1px_rgba(0,0,0,0.1)]"
+        >
+          {feedback && (
+            <div
+              className={`mb-4 px-4 py-3 rounded-md text-sm ${
+                feedback.tipo === 'sucesso'
+                  ? 'bg-emerald-50 text-emerald-800 border border-emerald-200'
+                  : 'bg-red-50 text-red-800 border border-red-200'
+              }`}
+            >
+              {feedback.texto}
+            </div>
+          )}
 
           {/* Seção 1 — Campos do formulário + Capa */}
           <div className="grid grid-cols-1 md:grid-cols-[1fr_auto] gap-6 items-stretch md:flex-1">
 
             {/* Campos */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start md:auto-rows-fr">
-              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
+              <div className="relative grid gap-2 md:flex md:flex-col md:justify-between">
                 <Label className="md:text-base" htmlFor="titulo">
                   Título
                 </Label>
-                <Input id="titulo" placeholder="Digite o título do livro" className="md:flex-1 md:max-h-[56px] md:!text-base" />
+                <Input
+                  id="titulo"
+                  placeholder="Digite o título do livro"
+                  className="md:flex-1 md:max-h-[56px] md:!text-base"
+                  {...register('titulo', { required: '*Este é um campo obrigatório.' })}
+                />
+                {errors.titulo && (
+                  <span className="absolute top-[calc(100%+3px)] text-xs text-[#FF0000] md:pl-2">
+                    {errors.titulo.message}
+                  </span>
+                )}
               </div>
 
-              <div className="grid gap-2 md:flex md:flex-col md:justify-between relative">
+              <div className="relative grid gap-2 md:flex md:flex-col md:justify-between">
                 <Label className="md:text-base" htmlFor="autor">
                   Autor
                 </Label>
-                <Input id="autor" placeholder="Digite o nome do autor" className="md:flex-1 md:max-h-[56px] md:!text-base" />
-                <span className="absolute top-[calc(100%+3px)] text-xs text-[#FF0000] md:pl-2">
-                  *Este é um campo obrigatório.
-                </span>
+                <Input
+                  id="autor"
+                  placeholder="Digite o nome do autor"
+                  className="md:flex-1 md:max-h-[56px] md:!text-base"
+                  {...register('autor', { required: '*Este é um campo obrigatório.' })}
+                />
+                {errors.autor && (
+                  <span className="absolute top-[calc(100%+3px)] text-xs text-[#FF0000] md:pl-2">
+                    {errors.autor.message}
+                  </span>
+                )}
               </div>
 
-              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
+              <div className="relative grid gap-2 md:flex md:flex-col md:justify-between">
                 <Label className="md:text-base" htmlFor="isbn">
                   ISBN
                 </Label>
-                <Input id="isbn" placeholder="Digite o ISBN" className="md:flex-1 md:max-h-[56px] md:!text-base" />
+                <Input
+                  id="isbn"
+                  placeholder="Digite o ISBN"
+                  className="md:flex-1 md:max-h-[56px] md:!text-base"
+                  {...register('isbn', {
+                    required: '*Este é um campo obrigatório.',
+                    validate: (v) => {
+                      const digits = v.replace(/\D/g, '');
+                      return (digits.length === 10 || digits.length === 13) || '*ISBN deve ter 10 ou 13 dígitos.';
+                    },
+                  })}
+                />
+                {errors.isbn && (
+                  <span className="absolute top-[calc(100%+3px)] text-xs text-[#FF0000] md:pl-2">
+                    {errors.isbn.message}
+                  </span>
+                )}
               </div>
 
-              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
+              <div className="relative grid gap-2 md:flex md:flex-col md:justify-between">
                 <Label className="md:text-base" htmlFor="editora">
                   Editora
                 </Label>
-                <Input id="editora" placeholder="Digite a editora" className="md:flex-1 md:max-h-[56px] md:!text-base" />
+                <Input
+                  id="editora"
+                  placeholder="Digite a editora"
+                  className="md:flex-1 md:max-h-[56px] md:!text-base"
+                  {...register('editora', { required: '*Este é um campo obrigatório.' })}
+                />
+                {errors.editora && (
+                  <span className="absolute top-[calc(100%+3px)] text-xs text-[#FF0000] md:pl-2">
+                    {errors.editora.message}
+                  </span>
+                )}
               </div>
 
-              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
+              <div className="relative grid gap-2 md:flex md:flex-col md:justify-between">
                 <Label className="md:text-base" htmlFor="ano">
                   Ano
                 </Label>
-                <Input id="ano" type="number" placeholder="Digite o ano" className="md:flex-1 md:max-h-[56px] md:!text-base" />
+                <Input
+                  id="ano"
+                  type="number"
+                  placeholder="Digite o ano"
+                  className="md:flex-1 md:max-h-[56px] md:!text-base"
+                  {...register('ano', {
+                    required: '*Este é um campo obrigatório.',
+                    valueAsNumber: true,
+                  })}
+                />
+                {errors.ano && (
+                  <span className="absolute top-[calc(100%+3px)] text-xs text-[#FF0000] md:pl-2">
+                    {errors.ano.message}
+                  </span>
+                )}
               </div>
 
-              <div className="grid gap-2 md:flex md:flex-col md:justify-between">
-                <Label className="md:text-base" htmlFor="quantidade">
+              <div className="relative grid gap-2 md:flex md:flex-col md:justify-between">
+                <Label className="md:text-base" htmlFor="quantidadeTotal">
                   Quantidade
                 </Label>
-                <Input id="quantidade" type="number" placeholder="Digite a quantidade" className="md:flex-1 md:max-h-[56px] md:!text-base" />
+                <Input
+                  id="quantidadeTotal"
+                  type="number"
+                  placeholder="Digite a quantidade"
+                  className="md:flex-1 md:max-h-[56px] md:!text-base"
+                  {...register('quantidadeTotal', {
+                    required: '*Este é um campo obrigatório.',
+                    valueAsNumber: true,
+                    min: { value: 1, message: '*Quantidade deve ser maior que 0.' },
+                  })}
+                />
+                {errors.quantidadeTotal && (
+                  <span className="absolute top-[calc(100%+3px)] text-xs text-[#FF0000] md:pl-2">
+                    {errors.quantidadeTotal.message}
+                  </span>
+                )}
               </div>
             </div>
 
@@ -96,12 +235,18 @@ export default function CadastrarLivroPage() {
           {/* Seção 2 — Categoria */}
           <div className="border-t border-[#D9E2E8] mt-6 pt-6 grid gap-3">
             <Label className="md:text-base">Categoria</Label>
+            <input
+              type="hidden"
+              {...register('categoria', { required: '*Selecione uma categoria.' })}
+            />
             <div className="grid grid-cols-2 md:flex md:flex-nowrap mt-2 gap-4">
               {categorias.map(({ value, label }) => (
                 <button
                   key={value}
                   type="button"
-                  onClick={() => setCategoriaSelecionada(value)}
+                  onClick={() =>
+                    setValue('categoria', value, { shouldValidate: true })
+                  }
                   className={[
                     'md:flex-1 flex flex-col items-center pt-2 pb-3 px-4 rounded-xl border-2 transition-colors',
                     categoriaSelecionada === value
@@ -114,19 +259,35 @@ export default function CadastrarLivroPage() {
                 </button>
               ))}
             </div>
+            {errors.categoria && (
+              <span className="text-xs text-[#FF0000] pl-2">
+                {errors.categoria.message}
+              </span>
+            )}
           </div>
 
           {/* Seção 3 — Botões */}
           <div className="border-t border-[#D9E2E8] mt-6 pt-6 flex flex-col-reverse md:flex-row justify-end gap-3">
-            <Button className="border border-brand-green text-brand-green bg-white hover:bg-emerald-50 md:w-auto w-full md:h-12 md:text-base md:px-6">
+            <Button
+              type="button"
+              onClick={() => {
+                reset();
+                setFeedback(null);
+              }}
+              className="border border-brand-green text-brand-green bg-white hover:bg-emerald-50 md:w-auto w-full md:h-12 md:text-base md:px-6"
+            >
               Cancelar
             </Button>
-            <Button className="bg-brand-green text-white hover:bg-brand-green/90 md:w-auto w-full md:h-12 md:text-base md:px-6">
-              Salvar Livro
+            <Button
+              type="submit"
+              disabled={isSubmitting}
+              className="bg-brand-green text-white hover:bg-brand-green/90 md:w-auto w-full md:h-12 md:text-base md:px-6"
+            >
+              {isSubmitting ? 'Salvando...' : 'Salvar Livro'}
             </Button>
           </div>
 
-        </div>
+        </form>
       </div>
     </div>
   );
