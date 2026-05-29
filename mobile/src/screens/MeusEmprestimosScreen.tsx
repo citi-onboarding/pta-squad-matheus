@@ -1,16 +1,23 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Keyboard } from 'react-native';
+import { SafeAreaView } from 'react-native-safe-area-context'; // Importação para o topo branco
 import HeaderMobile from '../components/HeaderMobile';
 import EmprestimoCard from '../components/EmprestimoCard';
 import { Emprestimo } from '../types/emprestimo';
 
-// Mock com 5 empréstimos (divididos entre João e Maria para testar a busca)
+// Mock atualizado com a nova tipagem (sem status, com devolvido e emailUsuario)
 const mockEmprestimos: Emprestimo[] = [
-    { id: '1', usuario: 'João Silva', tituloLivro: 'Dom Casmurro', status: 'devolvido', dataLocacao: '02/03/2026', dataDevolucao: '12/03/2026' },
-    { id: '2', usuario: 'João Silva', tituloLivro: 'Clean Code', status: 'em_andamento', dataLocacao: '15/04/2026', dataDevolucao: '30/04/2026' },
-    { id: '3', usuario: 'João Silva', tituloLivro: 'História do Brasil', status: 'atrasado', dataLocacao: '01/03/2026', dataDevolucao: '10/03/2026' },
-    { id: '4', usuario: 'João Silva', tituloLivro: 'Introdução à Ciência', status: 'em_andamento', dataLocacao: '20/04/2026', dataDevolucao: '05/05/2026' },
-    { id: '5', usuario: 'Maria Souza', tituloLivro: 'O Pequeno Príncipe', status: 'devolvido', dataLocacao: '10/03/2026', dataDevolucao: '20/03/2026' },
+    { id: '1', usuario: 'João Silva', emailUsuario: 'joao.silva@email.com', tituloLivro: 'Dom Casmurro', devolvido: true, dataLocacao: '02/03/2026', dataDevolucao: '12/03/2026' },
+
+    // Para ficar "em andamento", coloquei a devolução para Junho (data futura)
+    { id: '2', usuario: 'João Silva', emailUsuario: 'joao.silva@email.com', tituloLivro: 'Clean Code', devolvido: false, dataLocacao: '15/05/2026', dataDevolucao: '15/06/2026' },
+
+    // Para ficar "atrasado", mantive a data no passado (Março) e devolvido: false
+    { id: '3', usuario: 'João Silva', emailUsuario: 'joao.silva@email.com', tituloLivro: 'História do Brasil', devolvido: false, dataLocacao: '01/03/2026', dataDevolucao: '10/03/2026' },
+
+    { id: '4', usuario: 'João Silva', emailUsuario: 'joao.silva@email.com', tituloLivro: 'Introdução à Ciência', devolvido: false, dataLocacao: '20/05/2026', dataDevolucao: '05/06/2026' },
+
+    { id: '5', usuario: 'Maria Souza', emailUsuario: 'maria.souza@email.com', tituloLivro: 'O Pequeno Príncipe', devolvido: true, dataLocacao: '10/03/2026', dataDevolucao: '20/03/2026' },
 ];
 
 export default function MeusEmprestimosScreen() {
@@ -21,7 +28,6 @@ export default function MeusEmprestimosScreen() {
         Keyboard.dismiss();
         const termo = busca.toLowerCase().trim();
 
-        // Se a busca estiver vazia, mostra todos. Caso contrário, filtra pelo NOME do usuário
         if (termo === '') {
             setListaFiltrada(mockEmprestimos);
         } else {
@@ -34,7 +40,11 @@ export default function MeusEmprestimosScreen() {
 
     return (
         <View className="flex-1 bg-[#F9FAFB]">
-            <HeaderMobile />
+
+            {/* Header protegido pela SafeAreaView para unificar a cor com o topo do iPhone */}
+            <SafeAreaView edges={['top']} className="bg-white">
+                <HeaderMobile />
+            </SafeAreaView>
 
             <View className="flex-1 px-4 pt-4">
                 {/* Campo de busca com ícone de lupa */}
