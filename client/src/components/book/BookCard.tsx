@@ -5,19 +5,23 @@ import RetangularButton from '../layout/RetangularButton';
 import { BorrowModal } from '../loan/BorrowModal';
 
 interface IBookCardProps {
+  id: string;
   title: string;
   author: string;
   category: string;
   availableQuantity: number;
   coverUrl: string;
+  onLoanSuccess?: () => void;
 }
 
 export function BookCard({
+  id,
   title,
   author,
   category,
   availableQuantity,
   coverUrl,
+  onLoanSuccess,
 }: IBookCardProps) {
   return (
     <div className="bg-white rounded-md shadow-sm border border-gray-100
@@ -41,7 +45,7 @@ export function BookCard({
         {/* 1. Ver — outline verde (borda verde, texto verde, fundo transparente) */}
         <RetangularButton className="col-span-1 border-2 border-brand-green justify-center font-semibold" text="Ver" backgroundColor="bg-white" textColor="text-emerald-400" srcImage="/img/eye.png"/>
         {/* 2. Emprestar — sólido verde (fundo verde, texto branco) */}
-        <BorrowModal bookTitle={title} className="col-span-2" />
+        <BorrowModal livroId={id} livroTitulo={title} onSuccess={onLoanSuccess} className="col-span-2" />
         <RetangularButton className="col-span-1 justify-center" text= "" backgroundColor="bg-red-600" textColor="text-white" srcImage="/img/trash.png"/>
       </div>
 
