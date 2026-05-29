@@ -16,7 +16,7 @@ export default function DashboardPage() {
         {/* VOCÊ DEVE: criar os 3 cards aqui */}
         <div className="grid grid-cols-3 gap-6 mb-6">
           {/* CARD 1: Total de Livros */}
-          <div className="flex items-center gap-2 bg-white rounded-md shadow-sm border border-gray-100 px-4 py-4 mb-6">
+          <div className="flex items-center gap-2 bg-white rounded-md shadow-sm border border-gray-100 px-4 py-4">
             <div className="bg-green-100 p-2 rounded-md">
               <img src="/img/greenOpenBook.png" alt="Total de Livros" className="w-6 h-6 text-gray-400" />
             </div>
@@ -27,9 +27,9 @@ export default function DashboardPage() {
           </div>
 
           {/* CARD 2: Empréstimos Ativos */}
-          <div className="flex items-center gap-2 bg-white rounded-md shadow-sm border border-gray-100 px-4 py-4 mb-6">
+          <div className="flex items-center gap-2 bg-white rounded-md shadow-sm border border-gray-100 px-4 py-4">
             <div className="bg-green-100 p-2 rounded-md">
-              <img src="/img/greenClock.png" alt="Total de Livros" className="w-6 h-6 text-gray-400" />
+              <img src="/img/greenClock.png" alt="Empréstimos Ativos" className="w-6 h-6 text-gray-400" />
             </div>
             <div className="grid grid-cols-1 gap-1 ml-3">
               <h1 className="">Empréstimos Ativos</h1>
@@ -38,9 +38,9 @@ export default function DashboardPage() {
           </div>
 
           {/* CARD 3: Livros Atrasados */}
-          <div className="flex items-center gap-2 bg-white rounded-md shadow-sm border border-gray-100 px-4 py-4 mb-6">
+          <div className="flex items-center gap-2 bg-white rounded-md shadow-sm border border-gray-100 px-4 py-4">
             <div className="bg-red-100 p-2 rounded-md">
-              <img src="/img/redAlert.png" alt="Total de Livros" className="w-6 h-6 text-gray-400" />
+              <img src="/img/redAlert.png" alt="Livros Atrasados" className="w-6 h-6 text-gray-400" />
             </div>
             <div className="grid grid-cols-1 gap-1 ml-3">
               <h1 className="">Livros Atrasados</h1>
