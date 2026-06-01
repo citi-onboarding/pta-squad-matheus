@@ -2,6 +2,8 @@
 
 import { Request, Response } from 'express';
 import { Citi, Crud } from "../global";
+import prisma from "@database";
+import { enviarLembrete } from "../services/emailService";
 
 const citiEmprestimo = new Citi("Emprestimo");
 const citiLivro = new Citi("Livro");
@@ -114,6 +116,41 @@ class EmprestimoController implements Crud {
         return response.status(httpStatus).send({ 
             message: 'Empréstimo cancelado e estoque restaurado com sucesso!' 
         });
+    }
+
+    enviarLembrete = async (request: Request, response: Response) => {
+        const { id } = request.params;
+        if (!id) return response.status(400).send({ error: 'ID inválido' });
+
+        const emprestimo = await prisma.emprestimo.findFirst({
+            where: { id },
+            include: { livro: true },
+        });
+
+        if (!emprestimo) {
+            return response.status(404).send({ error: 'Empréstimo não encontrado' });
+        }
+
+        if (emprestimo.status !== 'EM_ANDAMENTO') {
+            return response.status(400).send({ error: 'Empréstimo já foi devolvido' });
+        }
+
+        if (new Date(emprestimo.dataPrevistaDevolucao) >= new Date()) {
+            return response.status(400).send({ error: 'Empréstimo não está atrasado' });
+        }
+
+        try {
+            await enviarLembrete(
+                emprestimo.emailCliente,
+                emprestimo.nomeCliente,
+                emprestimo.livro.titulo,
+                emprestimo.dataPrevistaDevolucao.toISOString()
+            );
+            return response.status(200).send({ message: 'Lembrete enviado com sucesso' });
+        } catch (error) {
+            console.error('Erro ao enviar email:', error);
+            return response.status(500).send({ error: 'Erro ao enviar lembrete' });
+        }
     }
 }
 
