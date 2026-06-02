@@ -1,3 +1,5 @@
+import { ActivityIndicator } from 'react-native';
+import { api } from '../services/api';
 import React, { useState } from 'react';
 import { View, Text, TextInput, TouchableOpacity, FlatList, Keyboard } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context'; // Importação para o topo branco
@@ -5,36 +7,51 @@ import HeaderMobile from '../components/HeaderMobile';
 import EmprestimoCard from '../components/EmprestimoCard';
 import { Emprestimo } from '../types/emprestimo';
 
-// Mock atualizado com a nova tipagem (sem status, com devolvido e emailUsuario)
-const mockEmprestimos: Emprestimo[] = [
-    { id: '1', usuario: 'João Silva', emailUsuario: 'joao.silva@email.com', tituloLivro: 'Dom Casmurro', devolvido: true, dataLocacao: '02/03/2026', dataDevolucao: '12/03/2026' },
-
-    // Para ficar "em andamento", coloquei a devolução para Junho (data futura)
-    { id: '2', usuario: 'João Silva', emailUsuario: 'joao.silva@email.com', tituloLivro: 'Clean Code', devolvido: false, dataLocacao: '15/05/2026', dataDevolucao: '15/06/2026' },
-
-    // Para ficar "atrasado", mantive a data no passado (Março) e devolvido: false
-    { id: '3', usuario: 'João Silva', emailUsuario: 'joao.silva@email.com', tituloLivro: 'História do Brasil', devolvido: false, dataLocacao: '01/03/2026', dataDevolucao: '10/03/2026' },
-
-    { id: '4', usuario: 'João Silva', emailUsuario: 'joao.silva@email.com', tituloLivro: 'Introdução à Ciência', devolvido: false, dataLocacao: '20/05/2026', dataDevolucao: '05/06/2026' },
-
-    { id: '5', usuario: 'Maria Souza', emailUsuario: 'maria.souza@email.com', tituloLivro: 'O Pequeno Príncipe', devolvido: true, dataLocacao: '10/03/2026', dataDevolucao: '20/03/2026' },
-];
+const mockEmprestimos: Emprestimo[] = [];
 
 export default function MeusEmprestimosScreen() {
     const [busca, setBusca] = useState('');
-    const [listaFiltrada, setListaFiltrada] = useState<Emprestimo[]>(mockEmprestimos);
+    const [listaFiltrada, setListaFiltrada] =
+        useState<Emprestimo[]>([]);
 
-    const handleBuscar = () => {
+    const [loading, setLoading] = useState(false);
+    const [erro, setErro] = useState('');
+
+    const handleBuscar = async () => {
         Keyboard.dismiss();
-        const termo = busca.toLowerCase().trim();
 
-        if (termo === '') {
-            setListaFiltrada(mockEmprestimos);
-        } else {
-            const resultados = mockEmprestimos.filter((emp) =>
-                emp.usuario.toLowerCase().includes(termo)
+        try {
+            setLoading(true);
+            setErro('');
+
+            const emprestimos = await api.buscarEmprestimos();
+
+            const emprestimosComTitulo = await Promise.all(
+                emprestimos.map(async (emp: Emprestimo) => {
+
+                    const livro = await api.buscarLivroPorId(emp.livroId);
+
+                    return {
+                        ...emp,
+                        tituloLivro: livro.titulo,
+                    };
+                })
             );
+
+            const termo = busca.toLowerCase().trim();
+
+            const resultados = emprestimosComTitulo.filter(
+                (emp: Emprestimo) =>
+                    emp.nomeCliente.toLowerCase().includes(termo)
+            );
+
             setListaFiltrada(resultados);
+
+        } catch (error) {
+            console.error(error);
+            setErro('Erro ao buscar empréstimos');
+        } finally {
+            setLoading(false);
         }
     };
 
@@ -71,6 +88,20 @@ export default function MeusEmprestimosScreen() {
                 <Text className="text-sm text-gray-500 mb-3">
                     {listaFiltrada.length} empréstimo(s) encontrado(s)
                 </Text>
+
+                {loading && (
+                    <ActivityIndicator
+                        size="large"
+                        color="#78C594"
+                        style={{ marginBottom: 20 }}
+                    />
+                )}
+
+                {erro ? (
+                    <Text className="text-red-500 mb-3">
+                        {erro}
+                    </Text>
+                ) : null}
 
                 {/* Lista de cards com FlatList */}
                 <FlatList

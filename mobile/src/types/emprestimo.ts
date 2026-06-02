@@ -1,9 +1,12 @@
 export interface Emprestimo {
     id: string;
-    tituloLivro: string;
-    usuario: string;
-    emailUsuario: string;
+    livroId: string;
+    nomeCliente: string;
+    emailCliente: string;
     dataLocacao: string;
-    dataDevolucao: string;
-    devolvido: boolean;
+    dataPrevistaDevolucao: string;
+    status: 'EM_ANDAMENTO' | 'DEVOLVIDO';
+    atrasado: boolean;
+
+    tituloLivro?: string;
 }
