@@ -14,7 +14,8 @@ export function templateLembrete(
       <p style="margin: 0 0 16px;">Olá, <strong style="color: #111827;">${nomeCliente}</strong>!</p>
       <p style="margin: 0 0 16px;">Identificamos que o empréstimo do livro <strong style="color: #10B981;">${tituloLivro}</strong> está com a devolução atrasada.</p>
       <p style="margin: 0 0 16px;">A data prevista de devolução era <strong style="color: #10B981;">${dataFormatada}</strong>.</p>
-      <p style="margin: 0;">Pedimos a gentileza de regularizar a devolução o quanto antes.</p>
+      <p style="margin: 0 0 16px;">Pedimos a gentileza de regularizar a devolução o quanto antes.</p>
+      <p style="margin: 0; color: #111827;">Atenciosamente,<br /><strong>Gestão de Biblioteca Escolar</strong></p>
     </div>
     <div style="background-color: #f3f4f6; padding: 16px 24px; text-align: center; color: #6b7280; font-size: 12px;">
       Este é um e-mail automático, não responda.
