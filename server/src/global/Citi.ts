@@ -77,9 +77,6 @@ export default class Citi<Entity extends ModelNames> {
         value,
       };
     } catch (error) {
-      console.log("ERRO REAL DO PRISMA:");
-      console.log(error);
-
       Terminal.show(Message.ERROR_INSERTING_DATABASE);
       if (
         error instanceof Prisma.PrismaClientKnownRequestError &&
