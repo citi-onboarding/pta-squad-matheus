@@ -3,7 +3,7 @@ export default {
     blue: '#4684C0',
     white: '#FFFFFF',
     black: '#000000',
-    background: '#F5F5F5',
+    background: '#F9FAFB',
   },
   fonts: {
     light: 'Barlow_300Light',

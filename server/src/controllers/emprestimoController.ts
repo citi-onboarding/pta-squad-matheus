@@ -63,6 +63,17 @@ class EmprestimoController implements Crud {
                 }
             });
 
+            const emprestimosComAtraso = emprestimos.map((emprestimo) => {
+                const estaAtivo = emprestimo.status === 'EM_ANDAMENTO';
+                const prazoVencido =
+                    new Date(emprestimo.dataPrevistaDevolucao) < new Date();
+
+                return {
+                    ...emprestimo,
+                    atrasado: estaAtivo && prazoVencido
+                };
+            });
+
             const total = await prisma.emprestimo.count({
                 where: nomePesquisado ? {
                     nomeCliente: {
@@ -72,7 +83,10 @@ class EmprestimoController implements Crud {
                 } : undefined
             });
 
-            return response.status(200).json({ total, data: emprestimos });
+            return response.status(200).json({
+                total,
+                data: emprestimosComAtraso
+            });
 
 
         } catch (error) {

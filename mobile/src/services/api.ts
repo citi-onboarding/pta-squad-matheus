@@ -1,8 +1,14 @@
-const API_URL = 'http://10.0.2.2:3001';
+const API_URL = 'http://192.168.0.21:3001';
 
 export const api = {
-    async buscarEmprestimos() {
-        const response = await fetch(`${API_URL}/api/emprestimos`);
+    async buscarEmprestimos(nome?: string, pagina: number = 1) {
+        let url = `${API_URL}/api/emprestimos?pagina=${pagina}&limite=15`;
+
+        if (nome) {
+            url += `&nome=${encodeURIComponent(nome)}`;
+        }
+
+        const response = await fetch(url);
 
         if (!response.ok) {
             throw new Error('Erro ao buscar empréstimos');
@@ -12,10 +18,7 @@ export const api = {
 
     async buscarLivroPorId(id: string) {
         const response = await fetch(`${API_URL}/api/livros/${id}`);
-
-        if (!response.ok) {
-            throw new Error('Erro ao buscar livro');
-        }
+        if (!response.ok) throw new Error('Erro ao buscar livro');
         return response.json();
     }
 };
