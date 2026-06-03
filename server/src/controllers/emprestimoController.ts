@@ -1,5 +1,3 @@
-// emprestimoController.ts
-
 import { Request, Response } from 'express';
 import { Citi, Crud } from "../global";
 // Importando o prisma para fazer a busca de alta performance com JOIN
