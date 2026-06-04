@@ -9,11 +9,17 @@ export default function LivrosPage() {
   const [livros, setLivros] = useState([]);
   const [loading, setLoading] = useState(true);
   const [busca, setBusca] = useState('');  
+  const [categoriaSelecionada, setCategoriaSelecionada] = useState('');
 
-  const livrosFiltrados = livros.filter(
-    (livro) =>
-      livro.titulo.toLowerCase().includes(busca.toLowerCase()) ||
-      livro.autor.toLowerCase().includes(busca.toLowerCase())
+  const livrosFiltrados = livros.filter((livro) =>
+    categoriaSelecionada === '' 
+      ?
+        (livro.titulo.toLowerCase().includes(busca.toLowerCase()) || 
+        livro.autor.toLowerCase().includes(busca.toLowerCase()))
+      :
+        (livro.titulo.toLowerCase().includes(busca.toLowerCase()) || 
+        livro.autor.toLowerCase().includes(busca.toLowerCase())) && 
+        livro.categoria === categoriaSelecionada
   );
 
   useEffect(() => {
@@ -36,6 +42,20 @@ export default function LivrosPage() {
     }
     carregarLivros();
   }, []);
+
+  async function handleDelete(id: string) {
+    if (!window.confirm('Tem certeza que deseja excluir este livro?')) return;
+
+    try {
+      const res = await fetch(`/api/livros/${id}`, { method: 'DELETE' });
+      if (res.ok) {
+        // Recarrega a lista pra refletir a exclusão
+        carregarLivros();
+      }
+    } catch (error) {
+      console.error('Erro ao excluir livro:', error);
+    }
+  }
 
   if (loading) {
     return (
@@ -68,12 +88,14 @@ export default function LivrosPage() {
         </div>
         {/* Dica: flex com ícone Search do Lucide à esquerda */}
         <div className = "flex items-center gap-2 rounded-md shadow-sm border border-gray-100 h-9"> 
-          <select name="category" id="category" className='border-gray-100 px-4 rounded-2xl hover:bg-gray-50'>
+          <select name="category" id="category" className='border-gray-100 px-4 rounded-2xl hover:bg-gray-50'
+                  value={categoriaSelecionada} onChange={(e) => setCategoriaSelecionada(e.target.value)}>
             <option value="">Todas as categorias</option>
-            <option value="tecnologia">Tecnologia</option>
-            <option value="infantil">Infantil</option>
-            <option value="romance">Romance</option>
-            <option value="ficção">Ficção</option>
+            <option value="TECNOLOGIA">Tecnologia</option>
+            <option value="INFANTIL">Infantil</option>
+            <option value="ROMANCE">Romance</option>
+            <option value="HISTORIA">História</option>
+            <option value="CIENCIAS">Ciência</option>
           </select>
         </div>
       </div>
@@ -94,6 +116,7 @@ export default function LivrosPage() {
               category={livro.categoria}
               availableQuantity={livro.quantidadeDisponivel}
               coverUrl={livro.capaUrl}
+              onDelete={() => handleDelete(livro.id)}
             />
           ))}
         </div>

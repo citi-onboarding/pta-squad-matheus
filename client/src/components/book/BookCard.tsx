@@ -18,6 +18,7 @@ export function BookCard({
   category,
   availableQuantity,
   coverUrl,
+  onDelete,
 }: IBookCardProps) {
   return (
     <div className="bg-white rounded-md shadow-sm border border-gray-100
@@ -42,7 +43,7 @@ export function BookCard({
         <RetangularButton className="col-span-1 border-2 border-brand-green justify-center font-semibold" text="Ver" backgroundColor="bg-white" textColor="text-emerald-400" srcImage="/img/eye.png"/>
         {/* 2. Emprestar — sólido verde (fundo verde, texto branco) */}
         <BorrowModal bookTitle={title} className="col-span-2" />
-        <RetangularButton className="col-span-1 justify-center" text= "" backgroundColor="bg-red-600" textColor="text-white" srcImage="/img/trash.png"/>
+        <RetangularButton className="col-span-1 justify-center" text= "" backgroundColor="bg-red-600" textColor="text-white" srcImage="/img/trash.png" onClick={onDelete}/>
       </div>
 
     </div>
