@@ -11,6 +11,7 @@ import {
 } from "@/components/ui/dialog";
 
 import { LoanHistoryRow } from '@/components/loan-history-row/index';
+import RetangularButton from '../layout/RetangularButton';
 
 interface Livro {
     titulo: string;
@@ -42,9 +43,7 @@ export function BookDetailsModal({ livro, emprestimos }: BookDetailsModalProps) 
     return (
         <Dialog>
             <DialogTrigger asChild>
-                <Button variant="outline" className="border-emerald-500 text-emerald-500">
-                    Ver
-                </Button>
+                <RetangularButton className="col-span-1 border-2 border-brand-green justify-center font-semibold" text="Ver" backgroundColor="bg-white" textColor="text-emerald-400" srcImage="/img/eye.png"/>
             </DialogTrigger>
 
             <DialogContent className="max-w-[55rem] max-h-[100vh] overflow-y-auto gap-6">
