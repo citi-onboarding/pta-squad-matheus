@@ -39,6 +39,12 @@ export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
     const [loans, setLoans] = useState<Loan[]>([]);
 
     const fetchBookDetails = useCallback(async () => {
+        const res = await fetch(`/api/livros/${bookId}`)
+        const data = await res.json()
+        console.log('STATUS:', res.status)
+        console.log('DATA:', data)
+        console.log('EMPRESTIMOS:', data.emprestimos)
+
         setIsLoading(true);
         try {
             // Buscando o livro com os empréstimos atrelados (exige que a API retorne o include do Prisma)
@@ -71,6 +77,21 @@ export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
         }
     }, [bookId]);
 
+    async function handleEnviarLembrete(emprestimoId: string) {
+        try {
+            const res = await fetch(`/api/emprestimos/${emprestimoId}/lembrete`, {
+                method: 'POST',
+            })
+            if (res.ok) {
+                alert('Lembrete enviado com sucesso!')
+            } else {
+                alert('Erro ao enviar lembrete')
+            }
+        } catch (error) {
+            alert('Erro de conexão com o servidor')
+        }
+    }
+    
     // Só fazemos a requisição para a API quando o usuário clicar em "Ver" e abrir a modal
     const handleOpenChange = (open: boolean) => {
         setIsOpen(open);
