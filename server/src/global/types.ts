@@ -1,6 +1,7 @@
-type InsertableDatabase = {
+type InsertableDatabase<Type = unknown> = {
   httpStatus: number;
   message: string;
+  value?: Type;
 };
 
 type GetableDatabase<Type> = {

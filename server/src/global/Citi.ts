@@ -7,7 +7,7 @@ import {
   UpdatableDatabaseValue,
   FindableDatabaseValue,
 } from "./types";
-import { PrismaClient, type Prisma } from "@prisma/client";
+import { PrismaClient, Prisma } from "@prisma/client";
 import prisma from "@database";
 
 type ModelNames = Prisma.ModelName;
@@ -35,7 +35,7 @@ type ModelUpdateInput = {
  * Classe que representa um conjunto de operações de banco de dados que podem ser realizadas em uma entidade.
  */
 export default class Citi<Entity extends ModelNames> {
-  constructor(readonly entity: Entity) {}
+  constructor(readonly entity: Entity) { }
   /**
    * Verifica se algum dos elementos fornecidos está indefinido.
    *
@@ -62,9 +62,9 @@ export default class Citi<Entity extends ModelNames> {
    */
   async insertIntoDatabase<T extends ModelCreateInput[Entity]>(
     object: T
-  ): Promise<InsertableDatabase> {
+  ): Promise<InsertableDatabase<Models[Entity]>> {
     try {
-      await prisma[
+      const value = await prisma[
         this.entity.toLowerCase() as Uncapitalize<Prisma.ModelName>
         //@ts-expect-error
       ].create({
@@ -74,9 +74,19 @@ export default class Citi<Entity extends ModelNames> {
       return {
         httpStatus: 201,
         message: Message.INSERTED_IN_DATABASE,
+        value,
       };
     } catch (error) {
       Terminal.show(Message.ERROR_INSERTING_DATABASE);
+      if (
+        error instanceof Prisma.PrismaClientKnownRequestError &&
+        error.code === "P2002"
+      ) {
+        return {
+          httpStatus: 409,
+          message: Message.ERROR_INSERTING_DATABASE,
+        };
+      }
       return {
         httpStatus: 400,
         message: Message.ERROR_INSERTING_DATABASE,
@@ -124,7 +134,7 @@ export default class Citi<Entity extends ModelNames> {
         //@ts-expect-error
       ].findFirst({
         where: {
-          id: Number(id),
+          id,
         },
       });
       Terminal.show(Message.VALUE_WAS_FOUND);
@@ -165,7 +175,7 @@ export default class Citi<Entity extends ModelNames> {
         //@ts-expect-error
       ].update({
         where: {
-          id: Number(id),
+          id,
         },
         data: object,
       });
@@ -197,7 +207,7 @@ export default class Citi<Entity extends ModelNames> {
         //@ts-expect-error
       ].delete({
         where: {
-          id: Number(id),
+          id,
         },
       });
       Terminal.show(Message.VALUE_DELETED_FROM_DATABASE);
