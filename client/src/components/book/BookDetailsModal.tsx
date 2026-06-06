@@ -1,7 +1,6 @@
 'use client';
 
 import { useState, useCallback } from 'react';
-import { Button } from "@/components/ui/button";
 import {
     Dialog,
     DialogContent,
@@ -14,7 +13,6 @@ import { LoanHistoryRow } from '@/components/loan-history-row/index';
 import { Loan } from '@/types/loan';
 import RetangularButton from '../layout/RetangularButton';
 
-// Tipagem baseada no que o seu backend (Prisma) deve retornar
 interface LivroAPI {
     id: string;
     titulo: string;
@@ -25,11 +23,11 @@ interface LivroAPI {
     ano: number;
     quantidadeTotal: number;
     quantidadeDisponivel: number;
-    emprestimos: any[]; // Vamos mapear isso para o tipo Loan do frontend
+    emprestimos: any[];
 }
 
 interface BookDetailsModalProps {
-    bookId: string; // Mudamos as props: agora recebemos apenas o ID
+    bookId: string;
 }
 
 export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
@@ -39,22 +37,14 @@ export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
     const [loans, setLoans] = useState<Loan[]>([]);
 
     const fetchBookDetails = useCallback(async () => {
-        const res = await fetch(`/api/livros/${bookId}`)
-        const data = await res.json()
-        console.log('STATUS:', res.status)
-        console.log('DATA:', data)
-        console.log('EMPRESTIMOS:', data.emprestimos)
-
         setIsLoading(true);
         try {
-            // Buscando o livro com os empréstimos atrelados (exige que a API retorne o include do Prisma)
             const res = await fetch(`/api/livros/${bookId}`);
 
             if (res.ok) {
                 const data = await res.json();
                 setBookData(data);
 
-                // Mapeando os dados do Banco (Português) para o tipo Loan do Frontend (Inglês)
                 if (data.emprestimos) {
                     const mappedLoans: Loan[] = data.emprestimos.map((emp: any) => ({
                         id: emp.id,
@@ -66,44 +56,29 @@ export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
                         returned: emp.status === 'DEVOLVIDO'
                     }));
                     setLoans(mappedLoans);
+                } else {
+                    setLoans([]);
                 }
             } else {
-                console.error("Falha ao buscar detalhes do livro.");
+                console.error('Falha ao buscar detalhes do livro.');
             }
         } catch (error) {
-            console.error("Erro na requisição:", error);
+            console.error('Erro na requisição:', error);
         } finally {
             setIsLoading(false);
         }
     }, [bookId]);
 
-    async function handleEnviarLembrete(emprestimoId: string) {
-        try {
-            const res = await fetch(`/api/emprestimos/${emprestimoId}/lembrete`, {
-                method: 'POST',
-            })
-            if (res.ok) {
-                alert('Lembrete enviado com sucesso!')
-            } else {
-                alert('Erro ao enviar lembrete')
-            }
-        } catch (error) {
-            alert('Erro de conexão com o servidor')
-        }
-    }
-    
-    // Só fazemos a requisição para a API quando o usuário clicar em "Ver" e abrir a modal
     const handleOpenChange = (open: boolean) => {
         setIsOpen(open);
         if (open) {
-            fetchBookDetails(); // Recarrega sempre que abrir para ter dados frescos
+            fetchBookDetails();
         }
     };
 
     return (
         <Dialog open={isOpen} onOpenChange={handleOpenChange}>
             <DialogTrigger asChild>
-                {/* Substituímos o botão padrão pelo seu botão customizado! */}
                 <div className="col-span-1 h-full w-full">
                     <RetangularButton
                         className="w-full h-full border-2 border-brand-green justify-center font-semibold cursor-pointer"
@@ -137,7 +112,7 @@ export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
                                 <div className="grid grid-cols-2 gap-x-20 gap-y-4 mt-4">
                                     <div>
                                         <p className="text-sm text-gray-500">ISBN</p>
-                                        <p className="">{bookData.isbn}</p>
+                                        <p>{bookData.isbn}</p>
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500">Categoria</p>
@@ -145,15 +120,15 @@ export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500">Editora</p>
-                                        <p className="">{bookData.editora}</p>
+                                        <p>{bookData.editora}</p>
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500">Ano</p>
-                                        <p className="">{bookData.ano}</p>
+                                        <p>{bookData.ano}</p>
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500">Quantidade Total</p>
-                                        <p className="">{bookData.quantidadeTotal}</p>
+                                        <p>{bookData.quantidadeTotal}</p>
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-500">Quantidade Disponível</p>
@@ -172,7 +147,6 @@ export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
                                     <LoanHistoryRow
                                         key={emprestimo.id}
                                         loan={emprestimo}
-                                    // Você pode passar as funções de Confirmar Devolução aqui depois
                                     />
                                 ))
                             ) : (

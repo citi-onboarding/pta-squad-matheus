@@ -11,7 +11,7 @@ export default function DashboardPage() {
   const [livrosAtrasados, setLivrosAtrasados] = useState(0);
   const [categorias, setCategorias] = useState([]);
   const [ultimosEmprestimos, setUltimosEmprestimos] = useState([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
     async function carregarDados() {
