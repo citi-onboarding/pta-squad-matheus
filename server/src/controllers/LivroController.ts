@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import { Citi, Crud } from "../global";
+import prisma from "@database";
 
 class LivroController implements Crud {
   constructor(private readonly citi = new Citi("Livro")) { }
@@ -44,10 +45,18 @@ class LivroController implements Crud {
   buscarPorId = async (request: Request, response: Response) => {
     const { id } = request.params;
 
-    const { httpStatus, value } = await this.citi.findById(id);
-    if (value === undefined) return response.status(404).send();
+    try {
+      const livro = await prisma.livro.findUnique({
+        where: { id },
+        include: { emprestimos: true }, // <- a única diferença
+      });
 
-    return response.status(httpStatus).send(value);
+      if (!livro) return response.status(404).send();
+
+      return response.status(200).send(livro);
+    } catch (error) {
+      return response.status(400).send();
+    }
   };
 
   excluir = async (request: Request, response: Response) => {

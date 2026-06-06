@@ -3,6 +3,8 @@
 import { Eye, BookOpen, Trash2 } from 'lucide-react';
 import RetangularButton from '../layout/RetangularButton';
 import { BorrowModal } from '../loan/BorrowModal';
+import { BookDetailsModal } from './BookDetailsModal'; 
+
 
 interface IBookCardProps {
   id: string;
@@ -43,7 +45,7 @@ export function BookCard({
       {/* SEÇÃO 3: Botões de ação */}
       <div className="grid grid-cols-4 gap-2 px-4 pb-4 pt-4 mt-auto">
         {/* 1. Ver — outline verde (borda verde, texto verde, fundo transparente) */}
-        <RetangularButton className="col-span-1 border-2 border-brand-green justify-center font-semibold" text="Ver" backgroundColor="bg-white" textColor="text-emerald-400" srcImage="/img/eye.png"/>
+        <BookDetailsModal bookId={id} />
         {/* 2. Emprestar — sólido verde (fundo verde, texto branco) */}
         <BorrowModal livroId={id} livroTitulo={title} onSuccess={onLoanSuccess} className="col-span-2" />
         <RetangularButton className="col-span-1 justify-center" text= "" backgroundColor="bg-red-600" textColor="text-white" srcImage="/img/trash.png"/>

@@ -6,7 +6,7 @@ const emprestimoRoutes = express.Router();
 emprestimoRoutes.post("/", emprestimoController.criar);
 emprestimoRoutes.get("/", emprestimoController.listar);
 emprestimoRoutes.get("/:id", emprestimoController.buscarPorId);
-emprestimoRoutes.put("/:id", emprestimoController.devolver);
+emprestimoRoutes.put("/:id/devolver", emprestimoController.devolver); // <- era /:id
 emprestimoRoutes.delete("/:id", emprestimoController.cancelar);
 emprestimoRoutes.post("/:id/lembrete", emprestimoController.enviarLembrete);
 
