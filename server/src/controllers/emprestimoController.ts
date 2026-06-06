@@ -1,7 +1,6 @@
-// emprestimoController.ts
-
 import { Request, Response } from 'express';
 import { Citi, Crud } from "../global";
+// Importando o prisma para fazer a busca de alta performance com JOIN
 import prisma from "@database";
 import { enviarLembrete } from "../services/emailService";
 
@@ -9,7 +8,7 @@ const citiEmprestimo = new Citi("Emprestimo");
 const citiLivro = new Citi("Livro");
 
 class EmprestimoController implements Crud {
-    constructor(private readonly citi = new Citi("Emprestimo")) {}
+    constructor(private readonly citi = new Citi("Emprestimo")) { }
 
     criar = async (request: Request, response: Response) => {
         const { livroId, nomeCliente, emailCliente, dataLocacao, dataPrevistaDevolucao } = request.body;
@@ -38,20 +37,63 @@ class EmprestimoController implements Crud {
         return response.status(httpStatus).send(value);
     }
 
+    // NOVO MÉTODO LISTAR 
     listar = async (request: Request, response: Response) => {
-        const { httpStatus, values } = await citiEmprestimo.getAll();
+        try {
+            const nomePesquisado = request.query.nome as string;
 
-        const emprestimosComAtraso = values.map((emp: any) => {
-            const estaAtivo = emp.status === 'EM_ANDAMENTO';
-            const prazoVencido = new Date(emp.dataPrevistaDevolucao) < new Date();
+            const pagina = Number(request.query.pagina) || 1;
+            const limite = Number(request.query.limite) || 15;
+            const pularRegistros = (pagina - 1) * limite;
 
-            return {
-                ...emp,
-                atrasado: estaAtivo && prazoVencido
-            };
-        });
+            const emprestimos = await prisma.emprestimo.findMany({
+                where: nomePesquisado ? {
+                    nomeCliente: {
+                        contains: nomePesquisado,
+                        mode: 'insensitive'
+                    }
+                } : undefined,
 
-        return response.status(httpStatus).send(emprestimosComAtraso);
+                include: {
+                    livro: true
+                },
+                take: limite,
+                skip: pularRegistros,
+                orderBy: {
+                    dataLocacao: 'desc'
+                }
+            });
+
+            const emprestimosComAtraso = emprestimos.map((emprestimo) => {
+                const estaAtivo = emprestimo.status === 'EM_ANDAMENTO';
+                const prazoVencido =
+                    new Date(emprestimo.dataPrevistaDevolucao) < new Date();
+
+                return {
+                    ...emprestimo,
+                    atrasado: estaAtivo && prazoVencido
+                };
+            });
+
+            const total = await prisma.emprestimo.count({
+                where: nomePesquisado ? {
+                    nomeCliente: {
+                        contains: nomePesquisado,
+                        mode: 'insensitive'
+                    }
+                } : undefined
+            });
+
+            return response.status(200).json({
+                total,
+                data: emprestimosComAtraso
+            });
+
+
+        } catch (error) {
+            console.error("Erro na busca paginada:", error);
+            return response.status(500).json({ error: "Erro interno ao listar empréstimos" });
+        }
     }
 
     buscarPorId = async (request: Request, response: Response) => {
@@ -75,16 +117,16 @@ class EmprestimoController implements Crud {
 
     devolver = async (request: Request, response: Response) => {
         const { value: emprestimo } = await citiEmprestimo.findById(request.params.id);
-        
+
         if (!emprestimo) return response.status(404).send();
-        
+
         if (emprestimo.status === 'DEVOLVIDO') {
             return response.status(400).send({
                 error: 'Este empréstimo já foi devolvido'
             });
         }
 
-        await citiEmprestimo.updateValue(request.params.id, {status: 'DEVOLVIDO'});
+        await citiEmprestimo.updateValue(request.params.id, { status: 'DEVOLVIDO' });
 
         const { value: livro } = await citiLivro.findById(emprestimo.livroId);
         if (livro) {
@@ -113,8 +155,8 @@ class EmprestimoController implements Crud {
             });
         }
 
-        return response.status(httpStatus).send({ 
-            message: 'Empréstimo cancelado e estoque restaurado com sucesso!' 
+        return response.status(httpStatus).send({
+            message: 'Empréstimo cancelado e estoque restaurado com sucesso!'
         });
     }
 

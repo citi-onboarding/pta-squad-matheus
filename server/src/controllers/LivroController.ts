@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import { Citi, Crud } from "../global";
 
 class LivroController implements Crud {
-  constructor(private readonly citi = new Citi("Livro")) {}
+  constructor(private readonly citi = new Citi("Livro")) { }
 
   criar = async (request: Request, response: Response) => {
     const { titulo, autor, isbn, editora, ano, quantidadeTotal, categoria } =
