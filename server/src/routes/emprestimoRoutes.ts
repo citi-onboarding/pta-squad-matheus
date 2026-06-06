@@ -8,5 +8,6 @@ emprestimoRoutes.get("/", emprestimoController.listar);
 emprestimoRoutes.get("/:id", emprestimoController.buscarPorId);
 emprestimoRoutes.put("/:id", emprestimoController.devolver);
 emprestimoRoutes.delete("/:id", emprestimoController.cancelar);
+emprestimoRoutes.post("/:id/lembrete", emprestimoController.enviarLembrete);
 
 export default emprestimoRoutes;
