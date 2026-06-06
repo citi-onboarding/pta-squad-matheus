@@ -35,7 +35,7 @@ type ModelUpdateInput = {
  * Classe que representa um conjunto de operações de banco de dados que podem ser realizadas em uma entidade.
  */
 export default class Citi<Entity extends ModelNames> {
-  constructor(readonly entity: Entity) {}
+  constructor(readonly entity: Entity) { }
   /**
    * Verifica se algum dos elementos fornecidos está indefinido.
    *

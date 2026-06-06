@@ -17,7 +17,6 @@ export function computeStatus(loan: Loan): LoanStatus {
 }
 
 export function formatDate(iso: string): string {
-  if (!iso) return '—'
   const [year, month, day] = iso.split('T')[0].split('-')
   return `${day}/${month}/${year}`
 }
