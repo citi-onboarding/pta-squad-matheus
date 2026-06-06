@@ -30,6 +30,7 @@ model Livro {
   quantidadeTotal      Int
   quantidadeDisponivel Int
   categoria            Categoria
+  capa                 String?
   createdAt            DateTime     @default(now())
 
   emprestimos Emprestimo[]

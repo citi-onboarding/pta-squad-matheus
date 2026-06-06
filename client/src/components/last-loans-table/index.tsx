@@ -20,20 +20,28 @@ export function LastLoansTable({ loans }: LastLoansTableProps) {
           </tr>
         </thead>
         <tbody>
-          {loans.map((loan) => {
-            const status = computeStatus(loan)
-            return (
-              <tr key={loan.id} className="table-row-border">
-                <td className="py-3 pl-4 pr-8 text-gray-900">{loan.bookTitle}</td>
-                <td className="py-3 pl-4 pr-8 text-gray-900">{loan.clientName}</td>
-                <td className="py-3 pl-4 pr-8 text-gray-900">{formatDate(loan.loanDate)}</td>
-                <td className="py-3 pl-4 pr-8 text-gray-900">{formatDate(loan.returnDate)}</td>
-                <td className="py-3 pl-4">
-                  <StatusBadge status={status} />
-                </td>
-              </tr>
-            )
-          })}
+          {loans.length === 0 ? (
+            <tr>
+              <td colSpan={5} className="py-8 text-center text-sm text-gray-400">
+                Nenhum empréstimo registrado.
+              </td>
+            </tr>
+          ) : (
+            loans.map((loan) => {
+              const status = computeStatus(loan)
+              return (
+                <tr key={loan.id} className="table-row-border">
+                  <td className="py-3 pl-4 pr-8 text-gray-900">{loan.bookTitle}</td>
+                  <td className="py-3 pl-4 pr-8 text-gray-900">{loan.clientName}</td>
+                  <td className="py-3 pl-4 pr-8 text-gray-900">{formatDate(loan.loanDate)}</td>
+                  <td className="py-3 pl-4 pr-8 text-gray-900">{formatDate(loan.returnDate)}</td>
+                  <td className="py-3 pl-4">
+                    <StatusBadge status={status} />
+                  </td>
+                </tr>
+              )
+            })
+          )}
         </tbody>
       </table>
     </div>

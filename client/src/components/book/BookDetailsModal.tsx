@@ -69,6 +69,30 @@ export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
         }
     }, [bookId]);
 
+    const handleConfirmReturn = async (loanId: string) => {
+        try {
+            const res = await fetch(`/api/emprestimos/${loanId}/devolver`, { method: 'PUT' });
+            if (res.ok) {
+                await fetchBookDetails();
+            } else {
+                console.error('Falha ao confirmar devolução.');
+            }
+        } catch (error) {
+            console.error('Erro ao confirmar devolução:', error);
+        }
+    };
+
+    const handleSendReminder = async (loanId: string) => {
+        try {
+            const res = await fetch(`/api/emprestimos/${loanId}/lembrete`, { method: 'POST' });
+            if (!res.ok) {
+                console.error('Falha ao enviar lembrete.');
+            }
+        } catch (error) {
+            console.error('Erro ao enviar lembrete:', error);
+        }
+    };
+
     const handleOpenChange = (open: boolean) => {
         setIsOpen(open);
         if (open) {
@@ -147,6 +171,8 @@ export function BookDetailsModal({ bookId }: BookDetailsModalProps) {
                                     <LoanHistoryRow
                                         key={emprestimo.id}
                                         loan={emprestimo}
+                                        onConfirmReturn={handleConfirmReturn}
+                                        onSendReminder={handleSendReminder}
                                     />
                                 ))
                             ) : (

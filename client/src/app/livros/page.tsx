@@ -14,7 +14,7 @@ interface Livro {
   quantidadeTotal: number;
   quantidadeDisponivel: number;
   categoria: string;
-  capaUrl?: string;
+  capa?: string;
 }
 
 export default function LivrosPage() {
@@ -124,7 +124,7 @@ export default function LivrosPage() {
               author={livro.autor}
               category={livro.categoria}
               availableQuantity={livro.quantidadeDisponivel}
-              coverUrl={livro.capaUrl || '/img/openbook.png'}
+              coverUrl={livro.capa || '/img/openbook.png'}
               onLoanSuccess={fetchLivros}
               onDelete={() => handleDelete(livro.id)}
             />

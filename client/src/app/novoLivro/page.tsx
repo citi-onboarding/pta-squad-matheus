@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useForm } from 'react-hook-form';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -14,6 +14,7 @@ interface CadastrarLivroForm {
   ano: number;
   quantidadeTotal: number;
   categoria: string;
+  capa?: string;
 }
 
 const categorias = [
@@ -37,6 +38,24 @@ export default function CadastrarLivroPage() {
   const [feedback, setFeedback] = useState<
     { tipo: 'sucesso' | 'erro'; texto: string } | null
   >(null);
+  const [capaPreview, setCapaPreview] = useState<string | null>(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  function handleImageChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (file.size > 2 * 1024 * 1024) {
+      setFeedback({ tipo: 'erro', texto: 'A imagem deve ter no máximo 2MB.' });
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = () => {
+      const base64 = reader.result as string;
+      setCapaPreview(base64);
+      setValue('capa', base64);
+    };
+    reader.readAsDataURL(file);
+  }
 
   useEffect(() => {
     if (!feedback) return;
@@ -63,7 +82,8 @@ export default function CadastrarLivroPage() {
         return;
       }
       setFeedback({ tipo: 'sucesso', texto: 'Livro cadastrado com sucesso!' });
-      reset()
+      reset();
+      setCapaPreview(null);
     } catch {
       setFeedback({ tipo: 'erro', texto: 'Erro de conexão com o servidor' });
     }
@@ -221,12 +241,26 @@ export default function CadastrarLivroPage() {
             {/* Upload da capa */}
             <div className="flex flex-col gap-3">
               <Label className="md:text-base">Capa do Livro</Label>
+              <input
+                ref={fileInputRef}
+                type="file"
+                accept="image/*"
+                className="hidden"
+                onChange={handleImageChange}
+              />
               <button
                 type="button"
-                className="flex flex-col items-center justify-center flex-1 [aspect-ratio:2/3] md:[aspect-ratio:auto] md:w-[clamp(180px,18vw,280px)] rounded-xl border-2 border-dashed border-[#D9E2E8] bg-[#F7F9FA] hover:border-gray-400 hover:bg-gray-100 transition-colors cursor-pointer"
+                onClick={() => fileInputRef.current?.click()}
+                className="flex flex-col items-center justify-center flex-1 [aspect-ratio:2/3] md:[aspect-ratio:auto] md:w-[clamp(180px,18vw,280px)] rounded-xl border-2 border-dashed border-[#D9E2E8] bg-[#F7F9FA] hover:border-gray-400 hover:bg-gray-100 transition-colors cursor-pointer overflow-hidden"
               >
-                <img src="/img/upload.png" alt="Upload" className="w-10 h-10 mb-2 opacity-50" />
-                <span className="text-xs text-gray-400 text-center px-2">Clique para adicionar</span>
+                {capaPreview ? (
+                  <img src={capaPreview} alt="Pré-visualização da capa" className="w-full h-full object-cover" />
+                ) : (
+                  <>
+                    <img src="/img/upload.png" alt="Upload" className="w-10 h-10 mb-2 opacity-50" />
+                    <span className="text-xs text-gray-400 text-center px-2">Clique para adicionar</span>
+                  </>
+                )}
               </button>
             </div>
 
@@ -272,6 +306,7 @@ export default function CadastrarLivroPage() {
               type="button"
               onClick={() => {
                 reset();
+                setCapaPreview(null);
                 setFeedback(null);
               }}
               className="border border-brand-green text-brand-green bg-white hover:bg-emerald-50 md:w-auto w-full md:h-12 md:text-base md:px-6"

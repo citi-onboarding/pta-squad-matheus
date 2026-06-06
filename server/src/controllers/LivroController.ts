@@ -6,7 +6,7 @@ class LivroController implements Crud {
   constructor(private readonly citi = new Citi("Livro")) { }
 
   criar = async (request: Request, response: Response) => {
-    const { titulo, autor, isbn, editora, ano, quantidadeTotal, categoria } =
+    const { titulo, autor, isbn, editora, ano, quantidadeTotal, categoria, capa } =
       request.body;
 
     const isAnyUndefined = this.citi.areValuesUndefined(
@@ -29,6 +29,7 @@ class LivroController implements Crud {
       quantidadeTotal,
       quantidadeDisponivel: quantidadeTotal,
       categoria,
+      ...(capa ? { capa } : {}),
     };
 
     const { httpStatus, value } = await this.citi.insertIntoDatabase(novoLivro);

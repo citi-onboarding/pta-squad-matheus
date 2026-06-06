@@ -22,7 +22,7 @@ export default function DashboardPage() {
 
         // Buscar empréstimos
         const resEmprestimos = await fetch('/api/emprestimos');
-        const emprestimos = await resEmprestimos.json();
+        const { data: emprestimos } = await resEmprestimos.json();
 
         // Calcular métricas
         setTotalLivros(livros.length);
@@ -77,19 +77,15 @@ export default function DashboardPage() {
         setCategorias(categoriasMap);
 
         // VOCÊ DEVE: pegar os últimos empréstimos pra tabela
-        const listaEmprestimos = emprestimos.map(emprestimo => {
-          const livroEncontrado = livros.find(livro => livro.id === emprestimo.livroId);
-
-          return {
-            bookTitle: livroEncontrado ? livroEncontrado.titulo : 'Livro não encontrado',
-            clientName: emprestimo.nomeCliente,
-            clientEmail: emprestimo.emailCliente,
-            loanDate: emprestimo.dataLocacao,
-            returnDate: emprestimo.dataPrevistaDevolucao,
-            id: emprestimo.id,
-            returned: emprestimo.status === 'DEVOLVIDO' ? true : false,
-          }
-        });
+        const listaEmprestimos = emprestimos.map(emprestimo => ({
+          id: emprestimo.id,
+          bookTitle: emprestimo.livro?.titulo ?? 'Livro não encontrado',
+          clientName: emprestimo.nomeCliente,
+          clientEmail: emprestimo.emailCliente,
+          loanDate: emprestimo.dataLocacao,
+          returnDate: emprestimo.dataPrevistaDevolucao,
+          returned: emprestimo.status === 'DEVOLVIDO',
+        }));
 
         setUltimosEmprestimos(listaEmprestimos);
 
