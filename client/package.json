@@ -26,7 +26,8 @@
     "react-hook-form": "^7.76.1",
     "sharp": "^0.33.2",
     "tailwind-merge": "^2.5.2",
-    "tailwindcss-animate": "^1.0.7"
+    "tailwindcss-animate": "^1.0.7",
+    "cssnano": "^6.1.2"
   },
   "devDependencies": {
     "@types/node": "^20.5.9",
