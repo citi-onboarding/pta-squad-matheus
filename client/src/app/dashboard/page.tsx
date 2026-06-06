@@ -9,8 +9,8 @@ export default function DashboardPage() {
   const [totalLivros, setTotalLivros] = useState(0);
   const [emprestimosAtivos, setEmprestimosAtivos] = useState(0);
   const [livrosAtrasados, setLivrosAtrasados] = useState(0);
-  const [categorias, setCategorias] = useState([]);
-  const [ultimosEmprestimos, setUltimosEmprestimos] = useState([]);
+  const [categorias, setCategorias] = useState<{ name: string; quantidade: number }[]>([]);
+  const [ultimosEmprestimos, setUltimosEmprestimos] = useState<any[]>([]);
   const [loading, setLoading] = useState(true); 
 
   useEffect(() => {
@@ -33,7 +33,7 @@ export default function DashboardPage() {
         let ativos = 0;
         let atrasados = 0;
         
-        emprestimos.forEach(emprestimo => {
+        emprestimos.forEach((emprestimo: any) => {
           const dataDevolucao = new Date(emprestimo.dataPrevistaDevolucao);
           const emprestimoStatus = emprestimo.status;
           if (emprestimoStatus === 'EM_ANDAMENTO') {
@@ -55,7 +55,7 @@ export default function DashboardPage() {
           { name: 'CIENCIAS', quantidade: 0 },
         ];
 
-        livros.forEach(livro => {
+        livros.forEach((livro: any) => {
           const categoria = livro.categoria;
           if (categoria === 'ROMANCE') {
             categoriasMap[0].quantidade++;
@@ -77,7 +77,7 @@ export default function DashboardPage() {
         setCategorias(categoriasMap);
 
         // VOCÊ DEVE: pegar os últimos empréstimos pra tabela
-        const listaEmprestimos = emprestimos.map(emprestimo => ({
+        const listaEmprestimos = emprestimos.map((emprestimo: any) => ({
           id: emprestimo.id,
           bookTitle: emprestimo.livro?.titulo ?? 'Livro não encontrado',
           clientName: emprestimo.nomeCliente,
